@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useConvexQuery } from "./use-convex-query";
 import { api } from "@/convex/_generated/api";
 
-// Pages that require onboarding (attendee-centered)
 const ATTENDEE_PAGES = ["/explore", "/events", "/my-tickets", "/profile"];
 
 export function useOnboarding() {
@@ -20,15 +19,12 @@ export function useOnboarding() {
   useEffect(() => {
     if (isLoading || !currentUser) return;
 
-    // Check if user hasn't completed onboarding
     if (!currentUser.hasCompletedOnboarding) {
-      // Check if current page requires onboarding
       const requiresOnboarding = ATTENDEE_PAGES.some((page) =>
         pathname.startsWith(page)
       );
 
       if (requiresOnboarding) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setShowOnboarding(true);
       }
     }
@@ -36,13 +32,11 @@ export function useOnboarding() {
 
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);
-    // Refresh to get updated user data
     router.refresh();
   };
 
   const handleOnboardingSkip = () => {
     setShowOnboarding(false);
-    // Redirect back to homepage if they skip
     router.push("/");
   };
 
