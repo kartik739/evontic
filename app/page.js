@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 export default function Home() {
   return (
     <div>
-      <Button>New Project update
+      <Button>New Project update now
 
       </Button>
     </div>
