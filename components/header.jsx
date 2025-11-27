@@ -24,7 +24,7 @@ export default function Header() {
 
   const { has } = useAuth();
   const hasPro = has?.({ plan: "pro" });
-
+ 
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-xl z-20 border-b">
@@ -32,14 +32,14 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="/spott.png"
-              alt="Spott logo"
+              src="/evontic.png"
+              alt="evontic logo"
               width={500}
               height={500}
               className="w-full h-11"
               priority
             />
-            {/* <span className="text-purple-500 text-2xl font-bold">spott*</span> */}
+            {/* <span className="text-purple-500 text-2xl font-bold">evontic*</span> */}
             {hasPro && (
               <Badge className="bg-linear-to-r from-pink-500 to-orange-500 gap-1 text-white ml-3">
                 <Crown className="w-3 h-3" />

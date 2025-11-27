@@ -25,7 +25,11 @@ export function useOnboarding() {
       );
 
       if (requiresOnboarding) {
-        setShowOnboarding(true);
+        const timer = setTimeout(() => {
+          setShowOnboarding(true);
+        }, 0);
+
+        return () => clearTimeout(timer);
       }
     }
   }, [currentUser, pathname, isLoading]);

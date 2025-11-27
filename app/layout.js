@@ -4,11 +4,11 @@ import "./globals.css";
 import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/footer";
-import { ConvexClientProvider } from "@/components/convex-client-provider";
+import { ConvexClientProvider } from "@/app/ConvexClientProvider";
 import { Toaster } from "sonner";
 
 export const metadata = {
-  title: "Spott - Delightful Events Start Here",
+  title: "Evontic - Delightful Events Start Here",
   description: "Discover and create amazing events",
 };
 
@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
               </main>
               <Toaster position="top-center" richColors />
             </ConvexClientProvider>
-          </ClerkProvider>
+            </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>
