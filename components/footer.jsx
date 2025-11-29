@@ -13,7 +13,7 @@ const Footer = () => {
           href="https://www.linkedin.com/in/kartikgoel001"
           className="text-gray-400"
         >
-          <Linkedin />
+          <Linkedin className="w-5 h-5" />
         </a>
         
         <a href="https://x.com/kartikgoel007" className="text-gray-400">

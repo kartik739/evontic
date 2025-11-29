@@ -66,9 +66,9 @@ export default function CreateEventPage() {
   const router = useRouter();
   const [showImagePicker, setShowImagePicker] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const [upgradeReason, setUpgradeReason] = useState("limit"); 
+  const [upgradeReason, setUpgradeReason] = useState("limit"); // "limit" or "color"
 
-  // Check if user has Pro
+  // Check if user has Pro plan
   const { has } = useAuth();
   const hasPro = has?.({ plan: "pro" });
 
@@ -114,12 +114,14 @@ export default function CreateEventPage() {
     return City.getCitiesOfState("IN", st.isoCode);
   }, [selectedState, indianStates]);
 
+  // Color presets - show all for Pro, only default for Free
   const colorPresets = [
-    "#1e3a8a",
+    "#1e3a8a", // Default color (always available)
     ...(hasPro ? ["#4c1d95", "#065f46", "#92400e", "#7f1d1d", "#831843"] : []),
   ];
 
   const handleColorClick = (color) => {
+    // If not default color and user doesn't have Pro
     if (color !== "#1e3a8a" && !hasPro) {
       setUpgradeReason("color");
       setShowUpgradeModal(true);
@@ -150,12 +152,14 @@ export default function CreateEventPage() {
         return;
       }
 
+      // Check event limit for Free users
       if (!hasPro && currentUser?.freeEventsCreated >= 1) {
         setUpgradeReason("limit");
         setShowUpgradeModal(true);
         return;
       }
 
+      // Check if trying to use custom color without Pro
       if (data.themeColor !== "#1e3a8a" && !hasPro) {
         setUpgradeReason("color");
         setShowUpgradeModal(true);
@@ -230,9 +234,9 @@ export default function CreateEventPage() {
                 src={coverImage}
                 alt="Cover"
                 className="w-full h-full object-cover"
-                width={500} 
-                height={500} 
-                priority 
+                width={500} // Adjust width as needed
+                height={500} // Adjust height as needed
+                priority // Optional: prioritize loading this image
               />
             ) : (
               <span className="opacity-60 text-sm">
