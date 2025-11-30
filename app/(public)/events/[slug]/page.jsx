@@ -28,7 +28,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getCategoryIcon, getCategoryLabel } from "@/lib/data";
-import RegisterModal from "./_components/register-modal";
+import RegisterModal from "./_components/register-model";
 
 // Utility function to darken a color
 function darkenColor(color, amount) {

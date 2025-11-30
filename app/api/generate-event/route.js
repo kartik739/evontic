@@ -14,7 +14,14 @@ export async function POST(req) {
       );
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    // Use gemini-2.5-flash - it's available in your account!
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 500,
+      }
+    });
 
     const systemPrompt = `You are an event planning assistant. Generate event details based on the user's description.
 
@@ -41,11 +48,9 @@ Rules:
 `;
 
     const result = await model.generateContent(systemPrompt);
-
     const response = await result.response;
     const text = response.text();
 
-    // Clean the response (remove markdown code blocks if present)
     let cleanedText = text.trim();
     if (cleanedText.startsWith("```json")) {
       cleanedText = cleanedText
@@ -55,15 +60,26 @@ Rules:
       cleanedText = cleanedText.replace(/```\n?/g, "");
     }
 
-    console.log(cleanedText);
+    console.log("Generated response:", cleanedText);
 
     const eventData = JSON.parse(cleanedText);
-
     return NextResponse.json(eventData);
+    
   } catch (error) {
     console.error("Error generating event:", error);
+    
+    if (error.status === 429) {
+      return NextResponse.json(
+        { 
+          error: "Rate limit exceeded. Please wait a moment and try again.",
+          details: "You can make 5 requests per minute with gemini-2.5-flash."
+        },
+        { status: 429 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: "Failed to generate event" + error.message },
+      { error: "Failed to generate event: " + error.message },
       { status: 500 }
     );
   }
