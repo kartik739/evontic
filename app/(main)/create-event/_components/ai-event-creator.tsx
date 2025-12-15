@@ -46,15 +46,28 @@ export default function AIEventCreator({ onEventGenerated }: AIEventCreatorProps
             });
 
             const data = await response.json();
+
+            if (response.status === 429) {
+                throw new Error("You're generating too fast! Please wait a moment before trying again.");
+            }
+
             if (!response.ok) throw new Error(data.error || "Failed to generate");
 
             onEventGenerated(data);
             toast.success("Event details generated! Review and customize below.");
             setIsOpen(false);
             setPrompt("");
-        } catch (error) {
-            toast.error("Failed to generate event. Please try again.");
+        } catch (error: any) {
             console.error(error);
+            const message = error.message || "Failed to generate event";
+
+            if (message.includes("429") || message.includes("generating too fast")) {
+                toast.error("Rate Limit Exceeded", {
+                    description: "Please wait 30-60 seconds before generating another event."
+                });
+            } else {
+                toast.error(message);
+            }
         } finally {
             setLoading(false);
         }
@@ -63,8 +76,11 @@ export default function AIEventCreator({ onEventGenerated }: AIEventCreatorProps
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                    <Sparkles className="w-4 h-4" />
+                <Button
+                    variant="secondary"
+                    className="gap-2 bg-white text-black hover:bg-white/90 shadow-lg border-0"
+                >
+                    <Sparkles className="w-4 h-4 text-purple-600" />
                     Generate with AI
                 </Button>
             </DialogTrigger>

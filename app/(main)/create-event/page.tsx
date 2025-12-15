@@ -3,41 +3,29 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { format } from "date-fns";
-import { State, City } from "country-state-city";
-import { CalendarIcon, Loader2, Sparkles } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { useConvexMutation, useConvexQuery } from "@/hooks/use-convex-query";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { useAuth } from "@clerk/nextjs";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import {
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 
 import UnsplashImagePicker from "@/components/unsplash-image-picker";
 import AIEventCreator from "./_components/ai-event-creator";
 import UpgradeModal from "@/components/upgrade-modal";
-import { CATEGORIES } from "@/lib/data";
-import Image from "next/image";
+
+// Import new modular components
+import EventDetailsCard from "./_components/event-details-card";
+import DateTimeCard from "./_components/date-time-card";
+import LocationCard from "./_components/location-card";
+import TicketPriceCard from "./_components/ticket-price-card";
 
 // HH:MM in 24h
 const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
@@ -46,8 +34,8 @@ const eventSchema = z.object({
     title: z.string().min(5, "Title must be at least 5 characters"),
     description: z.string().min(20, "Description must be at least 20 characters"),
     category: z.string().min(1, "Please select a category"),
-    startDate: z.date({ required_error: "Start date is required" }),
-    endDate: z.date({ required_error: "End date is required" }),
+    startDate: z.date().optional(),
+    endDate: z.date().optional(),
     startTime: z.string().regex(timeRegex, "Start time must be HH:MM"),
     endTime: z.string().regex(timeRegex, "End time must be HH:MM"),
     locationType: z.enum(["physical", "online"]).default("physical"),
@@ -79,15 +67,8 @@ export default function CreateEventPage() {
         api.events.createEvent
     );
 
-    const {
-        register,
-        handleSubmit,
-        watch,
-        setValue,
-        control,
-        formState: { errors },
-    } = useForm<EventFormValues>({
-        resolver: zodResolver(eventSchema),
+    const methods = useForm<EventFormValues>({
+        resolver: zodResolver(eventSchema) as any,
         defaultValues: {
             locationType: "physical",
             ticketType: "free",
@@ -104,20 +85,16 @@ export default function CreateEventPage() {
         },
     });
 
+    const {
+        handleSubmit,
+        watch,
+        setValue,
+        formState: { errors },
+    } = methods;
+
     const themeColor = watch("themeColor");
     const ticketType = watch("ticketType");
-    const selectedState = watch("state");
-    const startDate = watch("startDate");
-    const endDate = watch("endDate");
     const coverImage = watch("coverImage");
-
-    const indianStates = useMemo(() => State.getStatesOfCountry("IN"), []);
-    const cities = useMemo(() => {
-        if (!selectedState) return [];
-        const st = indianStates.find((s) => s.name === selectedState);
-        if (!st) return [];
-        return City.getCitiesOfState("IN", st.isoCode);
-    }, [selectedState, indianStates]);
 
     // Color presets - show all for Pro, only default for Free
     const colorPresets = [
@@ -145,9 +122,10 @@ export default function CreateEventPage() {
 
     const onSubmit = async (data: EventFormValues) => {
         try {
-            const start = combineDateTime(data.startDate, data.startTime);
-            const end = combineDateTime(data.endDate, data.endTime);
+            const start = combineDateTime(data.startDate!, data.startTime);
+            const end = combineDateTime(data.endDate!, data.endTime);
 
+            // Manual validation for dates (since they are optional in schema but required for logic)
             if (!start || !end) {
                 toast.error("Please select both date and time for start and end.");
                 return;
@@ -212,362 +190,127 @@ export default function CreateEventPage() {
 
     return (
         <div
-            className="min-h-screen transition-colors duration-300 px-6 py-8 -mt-6 md:-mt-16 lg:-mt-5 lg:rounded-md"
+            className="min-h-screen transition-colors duration-500 px-6 py-8 pt-24 lg:rounded-md"
             style={{ backgroundColor: themeColor }}
         >
-            {/* Header */}
-            <div className="max-w-6xl mx-auto flex flex-col gap-5 md:flex-row justify-between mb-10">
-                <div>
-                    <h1 className="text-4xl font-bold">Create Event</h1>
-                    {!hasPro && (
-                        <p className="text-sm text-muted-foreground mt-2">
-                            Free: {currentUser?.freeEventsCreated || 0}/1 events created
-                        </p>
-                    )}
-                </div>
-                <AIEventCreator onEventGenerated={handleAIGenerate} />
-            </div>
-
-            <div className="max-w-6xl mx-auto grid md:grid-cols-[320px_1fr] gap-10">
-                {/* LEFT: Image + Theme */}
-                <div className="space-y-6">
-                    <div
-                        className="aspect-square w-full rounded-xl overflow-hidden flex items-center justify-center cursor-pointer border"
-                        onClick={() => setShowImagePicker(true)}
-                    >
-                        {coverImage ? (
-                            <Image
-                                src={coverImage}
-                                alt="Cover"
-                                className="w-full h-full object-cover"
-                                width={500} // Adjust width as needed
-                                height={500} // Adjust height as needed
-                                priority // Optional: prioritize loading this image
-                            />
-                        ) : (
-                            <span className="opacity-60 text-sm">
-                                Click to add cover image
-                            </span>
-                        )}
-                    </div>
-
-                    <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                            <Label className="text-sm">Theme Color</Label>
-                            {!hasPro && (
-                                <Badge variant="secondary" className="text-xs gap-1">
-                                    <Sparkles className="w-3 h-3" />
-                                    Pro
-                                </Badge>
-                            )}
-                        </div>
-                        <div className="flex gap-2 flex-wrap">
-                            {colorPresets.map((color) => (
-                                <button
-                                    key={color}
-                                    type="button"
-                                    className={`w-10 h-10 rounded-full border-2 transition-all ${!hasPro && color !== "#1e3a8a"
-                                            ? "opacity-40 cursor-not-allowed"
-                                            : "hover:scale-110"
-                                        }`}
-                                    style={{
-                                        backgroundColor: color,
-                                        borderColor: themeColor === color ? "white" : "transparent",
-                                    }}
-                                    onClick={() => handleColorClick(color)}
-                                    title={
-                                        !hasPro && color !== "#1e3a8a"
-                                            ? "Upgrade to Pro for custom colors"
-                                            : ""
-                                    }
-                                />
-                            ))}
-                            {!hasPro && (
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setUpgradeReason("color");
-                                        setShowUpgradeModal(true);
-                                    }}
-                                    className="w-10 h-10 rounded-full border-2 border-dashed border-purple-300 flex items-center justify-center hover:border-purple-500 transition-colors"
-                                    title="Unlock more colors with Pro"
-                                >
-                                    <Sparkles className="w-5 h-5 text-purple-400" />
-                                </button>
-                            )}
-                        </div>
-                        {!hasPro && (
-                            <p className="text-xs text-muted-foreground">
-                                Upgrade to Pro to unlock custom theme colors
-                            </p>
-                        )}
-                    </div>
-                </div>
-
-                {/* RIGHT: Form */}
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-                    {/* Title */}
+            <FormProvider {...methods}>
+                {/* Header */}
+                <div className="max-w-6xl mx-auto flex flex-col gap-5 md:flex-row justify-between mb-10 animate-in fade-in slide-in-from-top-4">
                     <div>
-                        <Input
-                            {...register("title")}
-                            placeholder="Event Name"
-                            className="text-3xl font-semibold bg-transparent border-none focus-visible:ring-0"
-                        />
-                        {errors.title && (
-                            <p className="text-sm text-red-400 mt-1">
-                                {errors.title.message}
+                        <h1 className="text-4xl font-bold bg-black/20 px-4 py-2 rounded-xl inline-block backdrop-blur-sm border border-white/10">Create Event</h1>
+                        {!hasPro && (
+                            <p className="text-sm text-white/70 mt-2 px-1">
+                                Free: {currentUser?.freeEventsCreated || 0}/1 events created
                             </p>
                         )}
                     </div>
 
-                    {/* Date + Time */}
-                    <div className="grid grid-cols-2 gap-6">
-                        {/* Start */}
-                        <div className="space-y-2">
-                            <Label className="text-sm">Start</Label>
-                            <div className="grid grid-cols-[1fr_auto] gap-2">
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant="outline"
-                                            className="w-full justify-between"
-                                        >
-                                            {startDate ? format(startDate, "PPP") : "Pick date"}
-                                            <CalendarIcon className="w-4 h-4 opacity-60" />
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="p-0">
-                                        <Calendar
-                                            mode="single"
-                                            selected={startDate}
-                                            onSelect={(date) => setValue("startDate", date as Date)}
-                                        />
-                                    </PopoverContent>
-                                </Popover>
-                                <Input
-                                    type="time"
-                                    {...register("startTime")}
-                                    placeholder="hh:mm"
+                    <div className="flex items-center gap-4">
+                        {/* We can put other actions here */}
+                        <AIEventCreator onEventGenerated={handleAIGenerate} />
+                    </div>
+                </div>
+
+                <div className="max-w-6xl mx-auto grid md:grid-cols-[320px_1fr] gap-10">
+                    {/* LEFT: Image + Theme */}
+                    <div className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-500">
+                        <div
+                            className="aspect-square w-full rounded-2xl overflow-hidden flex items-center justify-center cursor-pointer border-2 border-dashed border-white/20 bg-black/10 hover:bg-black/20 hover:border-white/40 transition-all group relative"
+                            onClick={() => setShowImagePicker(true)}
+                        >
+                            {coverImage ? (
+                                <Image
+                                    src={coverImage}
+                                    alt="Cover"
+                                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                                    width={500}
+                                    height={500}
+                                    priority
                                 />
-                            </div>
-                            {(errors.startDate || errors.startTime) && (
-                                <p className="text-sm text-red-400">
-                                    {errors.startDate?.message || errors.startTime?.message}
-                                </p>
+                            ) : (
+                                <div className="text-center p-4">
+                                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-2 text-white">
+                                        <Sparkles className="w-6 h-6" />
+                                    </div>
+                                    <span className="opacity-70 text-sm font-medium">
+                                        Add Cover Image
+                                    </span>
+                                </div>
                             )}
+                            <div className="absolute inset-x-0 bottom-0 bg-black/50 p-2 text-center text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                Click to change
+                            </div>
                         </div>
 
-                        {/* End */}
-                        <div className="space-y-2">
-                            <Label className="text-sm">End</Label>
-                            <div className="grid grid-cols-[1fr_auto] gap-2">
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant="outline"
-                                            className="w-full justify-between"
-                                        >
-                                            {endDate ? format(endDate, "PPP") : "Pick date"}
-                                            <CalendarIcon className="w-4 h-4 opacity-60" />
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="p-0">
-                                        <Calendar
-                                            mode="single"
-                                            selected={endDate}
-                                            onSelect={(date) => setValue("endDate", date as Date)}
-                                            disabled={(date) => date < (startDate || new Date())}
-                                        />
-                                    </PopoverContent>
-                                </Popover>
-                                <Input
-                                    type="time"
-                                    {...register("endTime")}
-                                    placeholder="hh:mm"
-                                />
+                        <div className="space-y-4 bg-black/20 p-5 rounded-2xl border border-white/10 backdrop-blur-sm">
+                            <div className="flex items-center justify-between">
+                                <Label className="text-sm font-medium">Theme Color</Label>
+                                {!hasPro && (
+                                    <Badge variant="secondary" className="text-xs gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
+                                        <Sparkles className="w-3 h-3" />
+                                        Pro
+                                    </Badge>
+                                )}
                             </div>
-                            {(errors.endDate || errors.endTime) && (
-                                <p className="text-sm text-red-400">
-                                    {errors.endDate?.message || errors.endTime?.message}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Category */}
-                    <div className="space-y-2">
-                        <Label className="text-sm">Category</Label>
-                        <Controller
-                            control={control}
-                            name="category"
-                            render={({ field }) => (
-                                <Select value={field.value} onValueChange={field.onChange}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select category" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {CATEGORIES.map((cat) => (
-                                            <SelectItem key={cat.id} value={cat.id}>
-                                                {cat.icon} {cat.label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            )}
-                        />
-                        {errors.category && (
-                            <p className="text-sm text-red-400">{errors.category.message}</p>
-                        )}
-                    </div>
-
-                    {/* Location */}
-                    <div className="space-y-3">
-                        <Label className="text-sm">Location</Label>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Controller
-                                control={control}
-                                name="state"
-                                render={({ field }) => (
-                                    <Select
-                                        value={field.value}
-                                        onValueChange={(val) => {
-                                            field.onChange(val);
-                                            setValue("city", "");
+                            <div className="flex gap-3 flex-wrap justify-center">
+                                {colorPresets.map((color) => (
+                                    <button
+                                        key={color}
+                                        type="button"
+                                        className={`w-10 h-10 rounded-full shadow-lg transition-transform ${!hasPro && color !== "#1e3a8a"
+                                            ? "opacity-40 cursor-not-allowed"
+                                            : "hover:scale-110 active:scale-95"
+                                            } ${themeColor === color ? "ring-2 ring-white ring-offset-2 ring-offset-transparent" : ""}`}
+                                        style={{ backgroundColor: color }}
+                                        onClick={() => handleColorClick(color)}
+                                        title={
+                                            !hasPro && color !== "#1e3a8a"
+                                                ? "Upgrade to Pro for custom colors"
+                                                : "Select color"
+                                        }
+                                    />
+                                ))}
+                                {!hasPro && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setUpgradeReason("color");
+                                            setShowUpgradeModal(true);
                                         }}
+                                        className="w-10 h-10 rounded-full border-2 border-dashed border-white/30 flex items-center justify-center hover:border-white hover:bg-white/10 transition-all"
+                                        title="Unlock more colors with Pro"
                                     >
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select state" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {indianStates.map((s) => (
-                                                <SelectItem key={s.isoCode} value={s.name}>
-                                                    {s.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                        <Sparkles className="w-4 h-4" />
+                                    </button>
                                 )}
-                            />
-
-                            <Controller
-                                control={control}
-                                name="city"
-                                render={({ field }) => (
-                                    <Select
-                                        value={field.value}
-                                        onValueChange={field.onChange}
-                                        disabled={!selectedState}
-                                    >
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue
-                                                placeholder={
-                                                    selectedState ? "Select city" : "Select state first"
-                                                }
-                                            />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {cities.map((c) => (
-                                                <SelectItem key={c.name} value={c.name}>
-                                                    {c.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                )}
-                            />
+                            </div>
                         </div>
+                    </div>
 
-                        <div className="space-y-2 mt-6">
-                            <Label className="text-sm">Venue Details</Label>
+                    {/* RIGHT: Form */}
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-700">
+                        <EventDetailsCard />
+                        <DateTimeCard />
+                        <LocationCard />
+                        <TicketPriceCard />
 
-                            <Input
-                                {...register("venue")}
-                                placeholder="Venue link (Google Maps Link)"
-                                type="url"
-                            />
-                            {errors.venue && (
-                                <p className="text-sm text-red-400">{errors.venue.message}</p>
+                        <Button
+                            type="submit"
+                            disabled={isLoading}
+                            size="lg"
+                            className="w-full py-8 text-xl rounded-xl shadow-2xl bg-white text-black hover:bg-gray-100 hover:scale-[1.01] transition-all font-bold"
+                        >
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Creating Your Event...
+                                </>
+                            ) : (
+                                "Launch Event 🚀"
                             )}
-
-                            <Input
-                                {...register("address")}
-                                placeholder="Full address / street / building (optional)"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Description */}
-                    <div className="space-y-2">
-                        <Label>Description</Label>
-                        <Textarea
-                            {...register("description")}
-                            placeholder="Tell people about your event..."
-                            rows={4}
-                        />
-                        {errors.description && (
-                            <p className="text-sm text-red-400">
-                                {errors.description.message}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Ticketing */}
-                    <div className="space-y-3">
-                        <Label className="text-sm">Tickets</Label>
-                        <div className="flex items-center gap-6">
-                            <label className="flex items-center gap-2">
-                                <input
-                                    type="radio"
-                                    value="free"
-                                    {...register("ticketType")}
-                                    defaultChecked
-                                />{" "}
-                                Free
-                            </label>
-                            <label className="flex items-center gap-2">
-                                <input type="radio" value="paid" {...register("ticketType")} />{" "}
-                                Paid
-                            </label>
-                        </div>
-
-                        {ticketType === "paid" && (
-                            <Input
-                                type="number"
-                                placeholder="Ticket price ₹"
-                                {...register("ticketPrice", { valueAsNumber: true })}
-                            />
-                        )}
-                    </div>
-
-                    {/* Capacity */}
-                    <div className="space-y-2">
-                        <Label className="text-sm">Capacity</Label>
-                        <Input
-                            type="number"
-                            {...register("capacity", { valueAsNumber: true })}
-                            placeholder="Ex: 100"
-                        />
-                        {errors.capacity && (
-                            <p className="text-sm text-red-400">{errors.capacity.message}</p>
-                        )}
-                    </div>
-
-                    {/* Submit */}
-                    <Button
-                        type="submit"
-                        disabled={isLoading}
-                        className="w-full py-6 text-lg rounded-xl"
-                    >
-                        {isLoading ? (
-                            <>
-                                <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Creating...
-                            </>
-                        ) : (
-                            "Create Event"
-                        )}
-                    </Button>
-                </form>
-            </div>
+                        </Button>
+                    </form>
+                </div>
+            </FormProvider>
 
             {/* Unsplash Picker */}
             {showImagePicker && (

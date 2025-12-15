@@ -72,7 +72,7 @@ Rules:
             return NextResponse.json(
                 {
                     error: "Rate limit exceeded. Please wait a moment and try again.",
-                    details: "You can make 5 requests per minute with gemini-2.5-flash."
+                    details: "You can make limited requests per minute with the free tier."
                 },
                 { status: 429 }
             );
