@@ -266,3 +266,6 @@ If you'd like, I can also:
 - Add a minimal self-test script or CI config for linting
 
 If you want any of those, tell me which and I’ll update the repo. Happy to refine and add screenshots or quickstart gifs too!
+
+
+
