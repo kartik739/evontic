@@ -51,7 +51,7 @@ export const getEventsByLocation = query({
             );
         }
 
-        return events.slice(0, args.limit ?? 4);
+        return events.slice(0, args.limit ?? 20);
     },
 });
 

@@ -61,8 +61,10 @@ export default function EventDetailsCard() {
                                 <SelectContent>
                                     {CATEGORIES.map((cat) => (
                                         <SelectItem key={cat.id} value={cat.id}>
+                                            import {CategoryIcon} from "@/components/category-icon";
+                                            // ...
                                             <span className="flex items-center gap-2">
-                                                {cat.icon} {cat.label}
+                                                <CategoryIcon name={cat.icon} className="w-4 h-4" /> {cat.label}
                                             </span>
                                         </SelectItem>
                                     ))}
