@@ -5,7 +5,7 @@ import Testimonials from "@/components/landing/testimonials";
 
 export default function LandingPage() {
     return (
-        <main className="min-h-screen bg-black text-white selection:bg-purple-500/30">
+        <main className="min-h-screen bg-black text-white selection:bg-emerald-500/30">
             <Hero />
             <TrendingEvents />
             <Testimonials />

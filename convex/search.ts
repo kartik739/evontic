@@ -1,7 +1,6 @@
 import { query } from "./_generated/server";
 import { v } from "convex/values";
 
-// Search events by title
 export const searchEvents = query({
     args: {
         query: v.string(),
@@ -13,8 +12,6 @@ export const searchEvents = query({
         }
 
         const now = Date.now();
-
-        // Search by title
         const searchResults = await ctx.db
             .query("events")
             .withSearchIndex("search_title", (q) => q.search("title", args.query))

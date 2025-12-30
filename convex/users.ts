@@ -3,7 +3,6 @@ import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import { Doc } from "./_generated/dataModel";
 
-// Store or update user from Clerk
 export const store = mutation({
     args: {},
     handler: async (ctx) => {
@@ -12,7 +11,6 @@ export const store = mutation({
             throw new Error("Called storeUser without authentication present");
         }
 
-        // Check if we've already stored this identity before
         const user = await ctx.db
             .query("users")
             .withIndex("by_token", (q) =>
@@ -21,7 +19,6 @@ export const store = mutation({
             .unique();
 
         if (user !== null) {
-            // If we've seen this identity before but details changed, update them
             const updates: Record<string, any> = {};
             if (user.name !== identity.name) {
                 updates.name = identity.name ?? "Anonymous";
@@ -40,8 +37,6 @@ export const store = mutation({
 
             return user._id;
         }
-
-        // If it's a new identity, create a new user with defaults
         return await ctx.db.insert("users", {
             email: identity.email ?? "",
             tokenIdentifier: identity.tokenIdentifier,
@@ -55,7 +50,6 @@ export const store = mutation({
     },
 });
 
-// Get current authenticated user
 export const getCurrentUser = query({
     handler: async (ctx) => {
         const identity = await ctx.auth.getUserIdentity();
@@ -63,7 +57,6 @@ export const getCurrentUser = query({
             return null;
         }
 
-        // 🔹 Lookup by tokenIdentifier
         const user = await ctx.db
             .query("users")
             .withIndex("by_token", (q) =>
@@ -78,16 +71,14 @@ export const getCurrentUser = query({
         return user;
     },
 });
-
-// Complete onboarding (attendee preferences)
 export const completeOnboarding = mutation({
     args: {
         location: v.object({
             city: v.string(),
-            state: v.optional(v.string()), // Added state field
+            state: v.optional(v.string()),
             country: v.string(),
         }),
-        interests: v.array(v.string()), // Min 3 categories
+        interests: v.array(v.string()),
     },
     handler: async (ctx, args) => {
         const user: any = await ctx.runQuery(api.users.getCurrentUser);

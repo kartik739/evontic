@@ -19,6 +19,7 @@ import {
     Download,
     Search,
     Eye,
+    Edit,
 } from "lucide-react";
 import { useConvexQuery, useConvexMutation } from "@/hooks/use-convex-query";
 import { api } from "@/convex/_generated/api";
@@ -44,17 +45,14 @@ export default function EventDashboardPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [showQRScanner, setShowQRScanner] = useState(false);
 
-    // Fetch event dashboard data
     const { data: dashboardData, isLoading } = useConvexQuery(
         api.dashboard.getEventDashboard,
         { eventId }
     );
 
-    // Fetch registrations
     const { data: registrations, isLoading: loadingRegistrations } =
         useConvexQuery(api.registrations.getEventRegistrations, { eventId });
 
-    // Delete event mutation
     const { mutate: deleteEvent, isLoading: isDeleting } = useConvexMutation(
         api.events.deleteEvent
     );
@@ -116,7 +114,7 @@ export default function EventDashboardPage() {
     if (isLoading || loadingRegistrations) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
             </div>
         );
     }
@@ -127,8 +125,6 @@ export default function EventDashboardPage() {
 
     const { event, stats } = dashboardData;
     const typedRegistrations = registrations as Doc<"registrations">[] | undefined;
-
-    // Filter registrations based on active tab and search
     const filteredRegistrations = typedRegistrations?.filter((reg) => {
         const matchesSearch =
             reg.attendeeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -208,6 +204,15 @@ export default function EventDashboardPage() {
                         <Button
                             variant="outline"
                             size="sm"
+                            onClick={() => router.push(`/edit-event/${eventId}`)}
+                            className="gap-2 flex-1"
+                        >
+                            <Edit className="w-4 h-4" />
+                            Edit
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
                             onClick={handleDelete}
                             disabled={isDeleting}
                             className="text-red-500 hover:text-red-600 gap-2 flex-1"
@@ -218,12 +223,10 @@ export default function EventDashboardPage() {
                     </div>
                 </div>
 
-                {/* Quick Actions - Show QR Scanner if event is today */}
                 {stats.isEventToday && !stats.isEventPast && (
                     <Button
                         size="lg"
-                        // variant="outline"
-                        className="mb-8 w-full gap-2 h-10 bg-linear-to-r from-orange-500 via-pink-500 to-red-500 text-white hover:scale-[1.02]"
+                        className="mb-8 w-full gap-2 h-10 bg-linear-to-r from-orange-500 via-teal-500 to-red-500 text-white hover:scale-[1.02]"
                         onClick={() => setShowQRScanner(true)}
                     >
                         <QrCode className="w-6 h-6" />
@@ -235,8 +238,8 @@ export default function EventDashboardPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                     <Card className="py-0">
                         <CardContent className="p-6 flex items-center gap-3">
-                            <div className="p-3 bg-purple-100 rounded-lg">
-                                <Users className="w-6 h-6 text-purple-600" />
+                            <div className="p-3 bg-emerald-100 rounded-lg">
+                                <Users className="w-6 h-6 text-emerald-600" />
                             </div>
                             <div>
                                 <p className="text-2xl font-bold">

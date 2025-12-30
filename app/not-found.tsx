@@ -6,10 +6,10 @@ export default function NotFound() {
         <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4 text-center">
             {/* Background glow */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-600/20 rounded-full blur-[120px]" />
             </div>
 
-            <h1 className="text-9xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 mb-4 z-10">
+            <h1 className="text-9xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-600 mb-4 z-10">
                 404
             </h1>
             <h2 className="text-2xl md:text-4xl font-semibold mb-6 z-10">

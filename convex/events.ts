@@ -30,15 +30,12 @@ export const createEvent = mutation({
         try {
             const user: any = await ctx.runQuery(api.users.getCurrentUser);
             if (!user) throw new Error("Unauthenticated");
-
-            // SERVER-SIDE CHECK: Verify event limit for Free users
             if (!args.hasPro && user.freeEventsCreated >= 1) {
                 throw new Error(
                     "Free event limit reached. Please upgrade to Pro to create more events."
                 );
             }
 
-            // SERVER-SIDE CHECK: Verify custom color usage
             const defaultColor = "#1e3a8a";
             if (!args.hasPro && args.themeColor && args.themeColor !== defaultColor) {
                 throw new Error(
@@ -55,11 +52,10 @@ export const createEvent = mutation({
                 .replace(/[^a-z0-9]+/g, "-")
                 .replace(/(^-|-$)/g, "");
 
-            // Create event
             const { hasPro, ...eventData } = args;
             const eventId = await ctx.db.insert("events", {
                 ...eventData,
-                themeColor, // Use validated color
+                themeColor,
                 slug: `${slug}-${Date.now()}`,
                 organizerId: user._id,
                 organizerName: user.name,
@@ -115,8 +111,6 @@ export const updateEvent = mutation({
             if (event.organizerId !== user._id) {
                 throw new Error("You are not authorized to edit this event");
             }
-
-            // SERVER-SIDE CHECK: Verify custom color usage
             const defaultColor = "#1e3a8a";
             if (!args.hasPro && args.themeColor && args.themeColor !== defaultColor) {
                 throw new Error(

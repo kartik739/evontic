@@ -179,11 +179,11 @@
 }
 
 .cl-formFieldInput {
-  @apply bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-purple-500 transition-colors;
+  @apply bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-emerald-500 transition-colors;
 }
 
 .cl-formButtonPrimary {
-  @apply bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0;
+  @apply bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 border-0;
 }
 
 .cl-userButtonPopoverCard {

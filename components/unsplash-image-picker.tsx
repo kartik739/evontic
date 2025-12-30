@@ -78,7 +78,7 @@ export default function UnsplashImagePicker({ isOpen, onClose, onSelect }: Unspl
                 <div className="overflow-y-auto flex-1 -mx-6 px-6">
                     {loading ? (
                         <div className="flex items-center justify-center h-64">
-                            <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                            <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
                         </div>
                     ) : (
                         <div className="grid grid-cols-3 gap-4 py-4">
@@ -86,7 +86,7 @@ export default function UnsplashImagePicker({ isOpen, onClose, onSelect }: Unspl
                                 <button
                                     key={image.id}
                                     onClick={() => onSelect(image.urls.regular)}
-                                    className="relative aspect-video overflow-hidden rounded-lg border-2 border-transparent hover:border-purple-500 transition-all"
+                                    className="relative aspect-video overflow-hidden rounded-lg border-2 border-transparent hover:border-emerald-500 transition-all"
                                 >
                                     <Image
                                         src={image.urls.small}

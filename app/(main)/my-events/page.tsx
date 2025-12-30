@@ -41,15 +41,14 @@ export default function MyEventsPage() {
         router.push(`/edit-event/${eventId}`);
     };
 
-    // Navigate to event details
     const handleEventClick = (eventId: string) => {
-        router.push(`/events/${events?.find((e: Doc<"events">) => e._id === eventId)?.slug}`);
+        router.push(`/my-events/${eventId}`);
     };
 
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-black">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
             </div>
         );
     }
@@ -59,10 +58,8 @@ export default function MyEventsPage() {
 
     return (
         <div className="min-h-screen bg-black text-white px-4 md:px-8 py-8 pt-36 md:pt-32 pb-24 relative overflow-hidden">
-
-            {/* Background Ambience */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[120px]" />
+                <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-900/10 rounded-full blur-[120px]" />
                 <div className="absolute top-[20%] left-[-10%] w-[30%] h-[50%] bg-blue-900/10 rounded-full blur-[100px]" />
             </div>
 
@@ -74,7 +71,7 @@ export default function MyEventsPage() {
                             animate={{ opacity: 1, y: 0 }}
                             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-4"
                         >
-                            <Calendar className="w-4 h-4 text-purple-400" />
+                            <Calendar className="w-4 h-4 text-emerald-400" />
                             <span className="text-sm font-medium text-gray-300">
                                 Organizer Dashboard
                             </span>
@@ -93,7 +90,7 @@ export default function MyEventsPage() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.2 }}
                     >
-                        <Button asChild className="gap-2 bg-purple-600 hover:bg-purple-700 text-white border-0">
+                        <Button asChild className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white border-0">
                             <Link href="/create-event">
                                 <Plus className="w-4 h-4" />
                                 Create New Event
@@ -104,10 +101,10 @@ export default function MyEventsPage() {
 
                 <Tabs defaultValue="upcoming" className="w-full">
                     <TabsList className="bg-white/5 border border-white/10 text-gray-400 flex flex-wrap h-auto max-w-full justify-start p-1">
-                        <TabsTrigger value="upcoming" className="flex-1 min-w-[120px] data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+                        <TabsTrigger value="upcoming" className="flex-1 min-w-[120px] data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
                             Upcoming ({upcomingEvents.length})
                         </TabsTrigger>
-                        <TabsTrigger value="past" className="flex-1 min-w-[120px] data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+                        <TabsTrigger value="past" className="flex-1 min-w-[120px] data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
                             Past ({pastEvents.length})
                         </TabsTrigger>
                     </TabsList>
@@ -164,7 +161,6 @@ export default function MyEventsPage() {
                                                 action="event"
                                                 onClick={() => handleEventClick(event._id)}
                                                 onDelete={() => handleDelete(event._id)}
-                                            // No edit for past events typically, or maybe keep it? Let's keep it but maybe it's less relevant.
                                             />
                                             <div className="absolute top-4 left-4 bg-black/60 px-2 py-1 rounded text-xs text-white font-bold border border-white/10 backdrop-blur">
                                                 ENDED

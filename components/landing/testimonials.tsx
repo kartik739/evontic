@@ -31,7 +31,7 @@ export default function Testimonials() {
     return (
         <section className="py-24 bg-black relative overflow-hidden">
             {/* Ambient Background */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[400px] bg-purple-600/10 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[400px] bg-emerald-600/10 blur-[120px] rounded-full pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
                 <div className="text-center mb-16">
@@ -66,14 +66,14 @@ export default function Testimonials() {
                         >
                             <div className="flex gap-1 mb-6">
                                 {[...Array(testimonial.rating)].map((_, i) => (
-                                    <Star key={i} className="w-5 h-5 fill-purple-500 text-purple-500" />
+                                    <Star key={i} className="w-5 h-5 fill-emerald-500 text-emerald-500" />
                                 ))}
                             </div>
                             <p className="text-gray-300 mb-8 leading-relaxed text-lg">
                                 &quot;{testimonial.content}&quot;
                             </p>
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-linear-to-br from-purple-500 to-orange-500 flex items-center justify-center text-white font-bold shadow-lg">
+                                <div className="w-12 h-12 rounded-full bg-linear-to-br from-emerald-500 to-orange-500 flex items-center justify-center text-white font-bold shadow-lg">
                                     {testimonial.avatar}
                                 </div>
                                 <div>

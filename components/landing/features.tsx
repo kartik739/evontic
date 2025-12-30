@@ -88,7 +88,6 @@ export default function Features() {
     );
 }
 
-// Mock UI Components for Features
 const MockAI = () => (
     <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-900 to-neutral-800 border border-white/10 p-4 relative overflow-hidden group">
         <div className="absolute top-2 left-2 flex gap-1">
@@ -99,11 +98,11 @@ const MockAI = () => (
         <div className="mt-4 space-y-2">
             <div className="h-2 w-3/4 bg-white/10 rounded animate-pulse" />
             <div className="h-2 w-1/2 bg-white/10 rounded animate-pulse delay-75" />
-            <div className="h-20 w-full bg-purple-500/10 rounded-lg mt-4 border border-purple-500/20 flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-purple-400 animate-pulse" />
+            <div className="h-20 w-full bg-emerald-500/10 rounded-lg mt-4 border border-emerald-500/20 flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-emerald-400 animate-pulse" />
             </div>
         </div>
-        <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-purple-500/10 blur-3xl rounded-full group-hover:bg-purple-500/20 transition-colors" />
+        <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full group-hover:bg-emerald-500/20 transition-colors" />
     </div>
 );
 
@@ -155,8 +154,8 @@ const MockDashboard = () => (
             </div>
         </div>
         <div className="flex-1 bg-white/5 rounded border border-white/5 relative overflow-hidden">
-            <div className="absolute inset-x-0 bottom-0 h-10 bg-linear-to-t from-purple-500/20 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-purple-500/30" />
+            <div className="absolute inset-x-0 bottom-0 h-10 bg-linear-to-t from-emerald-500/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-emerald-500/30" />
         </div>
     </div>
 );
@@ -166,7 +165,7 @@ const items = [
         title: "AI-Powered Creation",
         description: "Generate event details, descriptions, and images instantly with Gemini AI.",
         header: <MockAI />,
-        icon: <Sparkles className="h-4 w-4 text-purple-400" />,
+        icon: <Sparkles className="h-4 w-4 text-emerald-400" />,
     },
     {
         title: "Real-time Updates",

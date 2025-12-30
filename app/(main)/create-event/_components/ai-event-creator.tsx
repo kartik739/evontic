@@ -80,14 +80,14 @@ export default function AIEventCreator({ onEventGenerated }: AIEventCreatorProps
                     variant="secondary"
                     className="gap-2 bg-white text-black hover:bg-white/90 shadow-lg border-0"
                 >
-                    <Sparkles className="w-4 h-4 text-purple-600" />
+                    <Sparkles className="w-4 h-4 text-emerald-600" />
                     Generate with AI
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
-                        <Sparkles className="w-5 h-5 text-purple-500" />
+                        <Sparkles className="w-5 h-5 text-emerald-500" />
                         AI Event Creator
                     </DialogTitle>
                     <DialogDescription>

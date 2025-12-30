@@ -67,7 +67,6 @@ export default function RegisterModal({ event, isOpen, onClose }: RegisterModalP
         onClose();
     };
 
-    // Success state
     if (isSuccess) {
         return (
             <Dialog open={isOpen} onOpenChange={onClose}>

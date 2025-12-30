@@ -10,7 +10,7 @@ export default function PricingPage() {
         <div className="min-h-screen bg-black text-white pt-44 md:pt-32 pb-24 relative overflow-hidden">
             {/* Background Ambience */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-[20%] left-[20%] w-[60%] h-[60%] bg-purple-900/10 rounded-full blur-[150px]" />
+                <div className="absolute top-[20%] left-[20%] w-[60%] h-[60%] bg-emerald-900/10 rounded-full blur-[150px]" />
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-6">
@@ -68,9 +68,9 @@ export default function PricingPage() {
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="p-8 rounded-3xl bg-linear-to-b from-purple-900/20 to-black border border-purple-500/30 backdrop-blur-sm relative flex flex-col"
+                        className="p-8 rounded-3xl bg-linear-to-b from-emerald-900/20 to-black border border-emerald-500/30 backdrop-blur-sm relative flex flex-col"
                     >
-                        <div className="absolute top-0 right-0 bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">
+                        <div className="absolute top-0 right-0 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">
                             POPULAR
                         </div>
                         <div className="flex justify-between items-center mb-6 mt-4">
@@ -80,32 +80,32 @@ export default function PricingPage() {
                                 <span className="text-gray-400">/month</span>
                             </div>
                         </div>
-                        <p className="text-purple-200 mb-8">For serious organizers who need professional tools.</p>
+                        <p className="text-emerald-200 mb-8">For serious organizers who need professional tools.</p>
 
                         <div className="space-y-4 mb-8 flex-1">
                             <div className="flex items-center gap-3">
-                                <Check className="w-5 h-5 text-purple-400" />
+                                <Check className="w-5 h-5 text-emerald-400" />
                                 <span>Unlimited Events</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <Check className="w-5 h-5 text-purple-400" />
+                                <Check className="w-5 h-5 text-emerald-400" />
                                 <span>Advanced Analytics & Insights</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <Check className="w-5 h-5 text-purple-400" />
+                                <Check className="w-5 h-5 text-emerald-400" />
                                 <span>AI Event Generation Tools</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <Check className="w-5 h-5 text-purple-400" />
+                                <Check className="w-5 h-5 text-emerald-400" />
                                 <span>Custom Branding & Themes</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <Check className="w-5 h-5 text-purple-400" />
+                                <Check className="w-5 h-5 text-emerald-400" />
                                 <span>Priority 24/7 Support</span>
                             </div>
                         </div>
 
-                        <Button asChild className="w-full bg-purple-600 hover:bg-purple-700 text-white border-0">
+                        <Button asChild className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border-0">
                             <Link href="/create-event">Upgrade to Pro</Link>
                         </Button>
                     </motion.div>

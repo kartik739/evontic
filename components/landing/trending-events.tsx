@@ -10,7 +10,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Doc } from "@/convex/_generated/dataModel";
 
 export default function TrendingEvents() {
-    // Fetch top 3 or 6 popular events for the homepage
     const { data: popularEvents, isLoading } = useConvexQuery(
         api.explore.getPopularEvents,
         { limit: 6 }
@@ -64,7 +63,7 @@ export default function TrendingEvents() {
                     >
                         <Link
                             href="/explore"
-                            className="group inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors font-medium bg-white/5 hover:bg-white/10 px-6 py-3 rounded-xl border border-white/10"
+                            className="group inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors font-medium bg-white/5 hover:bg-white/10 px-6 py-3 rounded-xl border border-white/10"
                         >
                             Explore all
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

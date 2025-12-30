@@ -19,11 +19,8 @@ import { motion } from "framer-motion";
 export default function ExplorePage() {
     const router = useRouter();
     const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
-
-    // Fetch current user for location
     const { data: currentUser } = useConvexQuery(api.users.getCurrentUser);
 
-    // Fetch events
     const { data: featuredEvents, isLoading: loadingFeatured } = useConvexQuery(
         api.explore.getFeaturedEvents,
         { limit: 3 }
@@ -61,14 +58,11 @@ export default function ExplorePage() {
         const slug = createLocationSlug(city, state);
         router.push(`/explore/${slug}`);
     };
-
-    // Format categories with counts
     const categoriesWithCounts = CATEGORIES.map((cat) => ({
         ...cat,
         count: (categoryCounts as Record<string, number>)?.[cat.id] || 0,
     }));
 
-    // Loading state
     const isLoading = loadingFeatured || loadingLocal || loadingPopular;
 
     const typedFeaturedEvents = featuredEvents as Doc<"events">[] | undefined;
@@ -77,10 +71,8 @@ export default function ExplorePage() {
 
     return (
         <div className="min-h-screen bg-black text-white p-6 md:p-8 pt-24 md:pt-32 pb-24 relative overflow-hidden">
-
-            {/* Background Ambience */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[120px]" />
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-900/10 rounded-full blur-[120px]" />
                 <div className="absolute top-[20%] right-[-10%] w-[30%] h-[50%] bg-blue-900/10 rounded-full blur-[100px]" />
             </div>
 
@@ -92,7 +84,7 @@ export default function ExplorePage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-4"
                     >
-                        <Sparkles className="w-4 h-4 text-purple-400" />
+                        <Sparkles className="w-4 h-4 text-emerald-400" />
                         <span className="text-sm font-medium text-gray-300">
                             Discover extraordinary experiences
                         </span>
@@ -105,7 +97,7 @@ export default function ExplorePage() {
                         className="text-5xl md:text-7xl font-bold tracking-tight"
                     >
                         Find your next <br className="md:hidden" />
-                        <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-pink-400 to-orange-400">
+                        <span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-400 via-teal-400 to-orange-400">
                             adventure.
                         </span>
                     </motion.h1>
@@ -122,7 +114,7 @@ export default function ExplorePage() {
 
                 {isLoading ? (
                     <div className="flex h-40 items-center justify-center">
-                        <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                        <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
                     </div>
                 ) : (
                     <>
@@ -139,10 +131,10 @@ export default function ExplorePage() {
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.1 + i * 0.05 }}
                                         onClick={() => handleCategoryClick(category.id)}
-                                        className="group relative overflow-hidden p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-purple-500/50 hover:bg-white/10 transition-all text-left"
+                                        className="group relative overflow-hidden p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-emerald-500/50 hover:bg-white/10 transition-all text-left"
                                     >
 
-                                        <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300 origin-left text-purple-400">
+                                        <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300 origin-left text-emerald-400">
                                             <CategoryIcon name={category.icon} className="w-10 h-10" />
                                         </div>
                                         <h3 className="font-semibold text-lg text-white mb-1">
@@ -168,7 +160,7 @@ export default function ExplorePage() {
                                     </div>
                                     <Button
                                         variant="ghost"
-                                        className="text-purple-400 hover:text-purple-300 hover:bg-white/5"
+                                        className="text-emerald-400 hover:text-emerald-300 hover:bg-white/5"
                                         onClick={handleViewLocalEvents}
                                     >
                                         View All <ArrowRight className="w-4 h-4 ml-2" />
@@ -213,7 +205,7 @@ export default function ExplorePage() {
                                         >
                                             <EventCard
                                                 event={event}
-                                                variant="list" // Use simplified vertical/horizontal card for list
+                                                variant="list"
                                                 onClick={() => handleEventClick(event.slug)}
                                                 className="h-full"
                                             />

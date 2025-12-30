@@ -17,7 +17,6 @@ interface SeedEvent {
     themeColor: string;
 }
 
-// Sample events data with Unsplash images
 const SAMPLE_EVENTS: SeedEvent[] = [
     {
         title: "React 19 Workshop: Master the New Features",
@@ -671,7 +670,6 @@ function generateSlug(title: string) {
 // Go to Dashboard > Functions > seed:run > Run
 export const run = internalMutation({
     handler: async (ctx) => {
-        // First, get or create a default organizer user
         let organizer = await ctx.db.query("users").first();
 
         if (!organizer) {
@@ -715,7 +713,7 @@ export const run = internalMutation({
                 startDate,
                 endDate,
                 timezone: "Asia/Kolkata",
-                locationType: "physical" as const, // Strict type for union
+                locationType: "physical" as const,
                 country: "India",
                 registrationCount,
                 createdAt: Date.now(),
@@ -765,7 +763,6 @@ export const fillMissingEvents = internalMutation({
     handler: async (ctx) => {
         let organizer = await ctx.db.query("users").first();
 
-        // Get categories definition dynamically from data file or hardcoded list if unavailable
         const categories = ["tech", "music", "sports", "art", "food", "business", "health", "education", "gaming", "networking", "outdoor", "community"];
 
         if (!organizer) {
@@ -802,7 +799,7 @@ export const fillMissingEvents = internalMutation({
                 for (let i = 0; i < needed; i++) {
                     const id = count + i;
                     const title = `Exciting ${cat.toUpperCase()} Event ${id + 1}`;
-                    const startDate = getRandomFutureDate(7, 30); // 1 to 4 weeks out
+                    const startDate = getRandomFutureDate(7, 30);
 
                     const eventData = {
                         title: title,

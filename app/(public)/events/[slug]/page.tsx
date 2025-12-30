@@ -41,13 +41,9 @@ export default function EventDetailPage() {
     const router = useRouter();
     const { user } = useUser();
     const [showRegisterModal, setShowRegisterModal] = useState(false);
-
-    // Fetch event details
     const { data: event, isLoading } = useConvexQuery(api.events.getEventBySlug, {
         slug: params.slug as string,
     });
-
-    // Check if user is already registered
     const { data: registration } = useConvexQuery(
         api.registrations.checkRegistration,
         event?._id ? { eventId: event._id } : "skip"
@@ -64,11 +60,8 @@ export default function EventDetailPage() {
                     text: event.description.slice(0, 100) + "...",
                     url: url,
                 });
-            } catch (error) {
-                // User cancelled or error occurred
-            }
+            } catch (error) { }
         } else {
-            // Fallback: copy to clipboard
             navigator.clipboard.writeText(url);
             toast.success("Link copied to clipboard!");
         }
@@ -119,7 +112,7 @@ END:VCALENDAR`;
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-black">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
             </div>
         );
     }
@@ -134,9 +127,7 @@ END:VCALENDAR`;
 
     return (
         <div className="min-h-screen bg-black text-white pb-20">
-            {/* Immersive Hero Section */}
             <div className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
-                {/* Background Image with Blur */}
                 {event.coverImage ? (
                     <Image
                         src={event.coverImage}
@@ -152,7 +143,6 @@ END:VCALENDAR`;
                     />
                 )}
 
-                {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-linear-to-b from-black/30 via-black/60 to-black" />
 
                 <div className="relative container mx-auto h-full px-4 flex flex-col justify-end pb-12 z-10">
@@ -181,7 +171,7 @@ END:VCALENDAR`;
                                 variant="outline"
                                 className={cn(
                                     "border-white/10 text-white backdrop-blur-md",
-                                    event.ticketType === "free" ? "bg-green-500/20 text-green-200 border-green-500/20" : "bg-purple-500/20 text-purple-200 border-purple-500/20"
+                                    event.ticketType === "free" ? "bg-green-500/20 text-green-200 border-green-500/20" : "bg-emerald-500/20 text-emerald-200 border-emerald-500/20"
                                 )}
                             >
                                 {event.ticketType === "free" ? "Free Event" : `Starts at ₹${event.ticketPrice}`}
@@ -194,15 +184,15 @@ END:VCALENDAR`;
 
                         <div className="flex flex-wrap items-center gap-6 text-gray-300 text-sm md:text-base">
                             <div className="flex items-center gap-2">
-                                <Calendar className="w-5 h-5 text-purple-400" />
+                                <Calendar className="w-5 h-5 text-emerald-400" />
                                 <span>{format(event.startDate, "EEEE, MMMM dd, yyyy")}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <MapPin className="w-5 h-5 text-purple-400" />
+                                <MapPin className="w-5 h-5 text-emerald-400" />
                                 <span>{event.city}, {event.state || event.country}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Users className="w-5 h-5 text-purple-400" />
+                                <Users className="w-5 h-5 text-emerald-400" />
                                 <span>{event.registrationCount} attending</span>
                             </div>
                         </div>
@@ -214,7 +204,7 @@ END:VCALENDAR`;
                 <div className="grid lg:grid-cols-[1fr_400px] gap-8">
                     {/* Main Content */}
                     <div className="space-y-8">
-                        {/* Event Image (Focus) */}
+                        {/* Event Image */}
                         {event.coverImage && (
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
@@ -259,7 +249,7 @@ END:VCALENDAR`;
                             <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
                                 <CardContent className="p-8">
                                     <h2 className="text-2xl font-bold mb-6 text-white flex items-center gap-2">
-                                        <MapPin className="w-6 h-6 text-purple-400" />
+                                        <MapPin className="w-6 h-6 text-emerald-400" />
                                         Location & Venue
                                     </h2>
                                     <div className="flex flex-col md:flex-row gap-6 md:items-center justify-between">
@@ -297,9 +287,9 @@ END:VCALENDAR`;
                                 <CardContent className="p-8">
                                     <h2 className="text-2xl font-bold mb-6 text-white">Organizer</h2>
                                     <div className="flex items-center gap-4">
-                                        <Avatar className="w-16 h-16 border-2 border-purple-500/20">
+                                        <Avatar className="w-16 h-16 border-2 border-emerald-500/20">
                                             <AvatarImage src="" />
-                                            <AvatarFallback className="bg-purple-500/20 text-purple-200 text-xl font-bold">
+                                            <AvatarFallback className="bg-emerald-500/20 text-emerald-200 text-xl font-bold">
                                                 {event.organizerName.charAt(0).toUpperCase()}
                                             </AvatarFallback>
                                         </Avatar>
@@ -309,7 +299,7 @@ END:VCALENDAR`;
                                         </div>
                                         <Button
                                             variant="ghost"
-                                            className="ml-auto text-purple-400 hover:text-purple-300 hover:bg-purple-500/10"
+                                            className="ml-auto text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
                                             onClick={() => router.push(`/organizer/${event.organizerId}`)}
                                         >
                                             View Profile
@@ -320,7 +310,6 @@ END:VCALENDAR`;
                         </motion.div>
                     </div>
 
-                    {/* Sticky Sidebar */}
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -328,7 +317,7 @@ END:VCALENDAR`;
                         className="lg:sticky lg:top-24 h-fit space-y-4"
                     >
                         <Card className="bg-[#0a0a0a] border border-white/10 shadow-2xl overflow-hidden">
-                            <div className="h-2 bg-linear-to-r from-purple-500 via-pink-500 to-orange-500" />
+                            <div className="h-2 bg-linear-to-r from-emerald-500 via-teal-500 to-orange-500" />
                             <CardContent className="p-6 space-y-6">
                                 {/* Date and Time */}
                                 <div className="space-y-4">
@@ -342,7 +331,7 @@ END:VCALENDAR`;
                                             </p>
                                             <Button
                                                 variant="link"
-                                                className="h-auto p-0 text-purple-400 mt-1"
+                                                className="h-auto p-0 text-emerald-400 mt-1"
                                                 onClick={handleAddToCalendar}
                                             >
                                                 Add to Calendar
@@ -368,7 +357,6 @@ END:VCALENDAR`;
                                     )}
                                 </div>
 
-                                {/* Call to Action */}
                                 <div className="pt-2">
                                     {registration ? (
                                         <div className="space-y-3">
@@ -403,7 +391,7 @@ END:VCALENDAR`;
                                         </Button>
                                     ) : (
                                         <Button
-                                            className="w-full h-12 gap-2 text-lg font-semibold bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg shadow-purple-500/25"
+                                            className="w-full h-12 gap-2 text-lg font-semibold bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white border-0 shadow-lg shadow-emerald-500/25"
                                             onClick={handleRegister}
                                         >
                                             Register Now
