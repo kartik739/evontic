@@ -19,7 +19,7 @@ export default function OrganizerProfilePage() {
     if (isLoadingOrganizer || isLoadingEvents) {
         return (
             <div className="min-h-screen bg-black flex items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
             </div>
         );
     }
@@ -37,15 +37,13 @@ export default function OrganizerProfilePage() {
 
     return (
         <div className="min-h-screen bg-black text-white pt-24 pb-24 relative">
-            {/* Ambience */}
-            <div className="absolute top-0 left-0 w-full h-[500px] bg-linear-to-b from-purple-900/20 to-transparent pointer-events-none" />
-
+            <div className="absolute top-0 left-0 w-full h-[500px] bg-linear-to-b from-emerald-900/20 to-transparent pointer-events-none" />
             <div className="container mx-auto px-6 relative z-10">
                 {/* Header Profile */}
                 <div className="flex flex-col md:flex-row items-center gap-8 mb-16">
-                    <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-purple-500/30">
+                    <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-emerald-500/30">
                         <AvatarImage src={organizer.imageUrl} />
-                        <AvatarFallback className="bg-purple-500/20 text-purple-200 text-4xl font-bold">
+                        <AvatarFallback className="bg-emerald-500/20 text-emerald-200 text-4xl font-bold">
                             {organizer.name?.charAt(0).toUpperCase()}
                         </AvatarFallback>
                     </Avatar>
@@ -71,7 +69,7 @@ export default function OrganizerProfilePage() {
                 {/* Events Section */}
                 <div>
                     <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-                        <Calendar className="w-8 h-8 text-purple-500" />
+                        <Calendar className="w-8 h-8 text-emerald-500" />
                         Events by {organizer.name}
                     </h2>
 

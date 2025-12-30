@@ -8,7 +8,7 @@ export default function CommunityPage() {
     return (
         <div className="min-h-screen bg-black text-white pt-24 pb-24 flex items-center justify-center relative overflow-hidden">
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute bottom-0 right-0 w-[60%] h-[60%] bg-pink-900/10 rounded-full blur-[150px]" />
+                <div className="absolute bottom-0 right-0 w-[60%] h-[60%] bg-teal-900/10 rounded-full blur-[150px]" />
             </div>
 
             <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
@@ -18,7 +18,7 @@ export default function CommunityPage() {
                     className="mb-8 flex justify-center"
                 >
                     <div className="p-6 rounded-full bg-white/5 border border-white/10">
-                        <Users className="w-16 h-16 text-purple-400" />
+                        <Users className="w-16 h-16 text-emerald-400" />
                     </div>
                 </motion.div>
 
@@ -35,7 +35,7 @@ export default function CommunityPage() {
                         <Button variant="outline" className="w-full">Join Discord</Button>
                     </div>
                     <div className="p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <Heart className="w-8 h-8 text-pink-400 mx-auto mb-4" />
+                        <Heart className="w-8 h-8 text-teal-400 mx-auto mb-4" />
                         <h3 className="font-bold mb-2">Twitter / X</h3>
                         <p className="text-sm text-gray-400 mb-4">Follow for updates and highlights.</p>
                         <Button variant="outline" className="w-full">Follow Us</Button>

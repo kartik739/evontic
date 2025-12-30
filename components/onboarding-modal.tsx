@@ -50,13 +50,10 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
     const { mutate: completeOnboarding, isLoading } = useConvexMutation(
         api.users.completeOnboarding
     );
-
-    // Get Indian states
     const indianStates = useMemo(() => {
         return State.getStatesOfCountry("IN");
     }, []);
 
-    // Get cities based on selected state
     const cities = useMemo(() => {
         if (!location.state) return [];
         const selectedState = indianStates.find((s) => s.name === location.state);
@@ -118,12 +115,12 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                     <DialogTitle className="flex items-center gap-2 text-2xl">
                         {step === 1 ? (
                             <>
-                                <Heart className="w-6 h-6 text-purple-500" />
+                                <Heart className="w-6 h-6 text-emerald-500" />
                                 What interests you?
                             </>
                         ) : (
                             <>
-                                <MapPin className="w-6 h-6 text-purple-500" />
+                                <MapPin className="w-6 h-6 text-emerald-500" />
                                 Where are you located?
                             </>
                         )}
@@ -145,8 +142,8 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                                         key={category.id}
                                         onClick={() => toggleInterest(category.id)}
                                         className={`p-3 sm:p-4 flex flex-col items-center text-center rounded-lg border-2 transition-all hover:scale-105 ${selectedInterests.includes(category.id)
-                                            ? "border-purple-500 bg-purple-500/10 shadow-lg shadow-purple-500/20"
-                                            : "border-border hover:border-purple-300"
+                                            ? "border-emerald-500 bg-emerald-500/10 shadow-lg shadow-emerald-500/20"
+                                            : "border-border hover:border-emerald-300"
                                             }`}
                                     >
                                         <div className="text-xl sm:text-2xl mb-1 sm:mb-2">{category.icon}</div>
@@ -231,9 +228,9 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                             </div>
 
                             {location.city && location.state && (
-                                <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+                                <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
                                     <div className="flex items-start gap-3">
-                                        <MapPin className="w-5 h-5 text-purple-500 mt-0.5" />
+                                        <MapPin className="w-5 h-5 text-emerald-500 mt-0.5" />
                                         <div>
                                             <p className="font-medium">Your location</p>
                                             <p className="text-sm text-muted-foreground">

@@ -16,22 +16,15 @@ export default function DynamicExplorePage() {
     const params = useParams();
     const router = useRouter();
     const slug = params.slug as string;
-
-    // Check if it's a valid category
     const categoryInfo = CATEGORIES.find((cat) => cat.id === slug);
     const isCategory = !!categoryInfo;
-
-    // If not a category, validate location
     const { city, state, isValid } = !isCategory
         ? parseLocationSlug(slug)
         : { city: null, state: null, isValid: true };
 
-    // If it's not a valid category and not a valid location, show 404
     if (!isCategory && !isValid) {
         notFound();
     }
-
-    // Fetch events based on type
     const { data: events, isLoading } = useConvexQuery(
         isCategory
             ? api.explore.getEventsByCategory
@@ -50,7 +43,7 @@ export default function DynamicExplorePage() {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
             </div>
         );
     }
@@ -63,7 +56,7 @@ export default function DynamicExplorePage() {
             <>
                 <div className="pb-5">
                     <div className="flex items-center gap-4 mb-4">
-                        <div className="text-5xl md:text-6xl text-purple-400">
+                        <div className="text-5xl md:text-6xl text-emerald-400">
                             <CategoryIcon name={categoryInfo.icon} className="w-12 h-12 md:w-16 md:h-16" />
                         </div>
                         <div>

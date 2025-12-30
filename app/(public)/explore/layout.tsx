@@ -12,7 +12,6 @@ export default function ExploreLayout({ children }: { children: React.ReactNode 
     return (
         <div className="pb-16 min-h-screen">
             <div className="max-w-7xl mx-auto px-6">
-                {/* Back Button for nested routes */}
                 {!isMainExplore && (
                     <div className="mb-6">
                         <Button

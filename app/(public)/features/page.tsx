@@ -6,7 +6,7 @@ import { Sparkles, Globe, Shield, Smartphone, Zap, BarChart3 } from "lucide-reac
 export default function FeaturesPage() {
     const features = [
         {
-            icon: <Sparkles className="w-8 h-8 text-purple-400" />,
+            icon: <Sparkles className="w-8 h-8 text-emerald-400" />,
             title: "AI-Powered Creation",
             description: "Generate comprehensive event details, schedules, and marketing copy in seconds using advanced AI."
         },
@@ -21,7 +21,7 @@ export default function FeaturesPage() {
             description: "Fraud-proof QR code ticketing system ensures only valid ticket holders gain entry."
         },
         {
-            icon: <Smartphone className="w-8 h-8 text-pink-400" />,
+            icon: <Smartphone className="w-8 h-8 text-teal-400" />,
             title: "Mobile First",
             description: "A fully responsive experience for organizers and attendees on any device."
         },
@@ -40,7 +40,7 @@ export default function FeaturesPage() {
     return (
         <div className="min-h-screen bg-black text-white pt-24 pb-24 relative overflow-hidden">
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-[10%] inset-x-0 h-[500px] bg-linear-to-b from-purple-900/20 to-transparent opacity-50" />
+                <div className="absolute top-[10%] inset-x-0 h-[500px] bg-linear-to-b from-emerald-900/20 to-transparent opacity-50" />
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-6">

@@ -29,8 +29,8 @@ export default function EventCard({
     onClick,
     onDelete,
     onEdit,
-    variant = "grid", // "grid" or "list"
-    action = null, // "event" | "ticket" | null
+    variant = "grid",
+    action = null,
     className = "",
 }: EventCardProps) {
     const toggleSave = useMutation(api.savedEvents.toggleSavedEvent);
@@ -46,7 +46,6 @@ export default function EventCard({
         }
     };
 
-    // List variant (compact horizontal layout)
     if (variant === "list") {
         return (
             <Card
@@ -72,7 +71,7 @@ export default function EventCard({
                                 style={{ background: `linear-gradient(135deg, ${event.themeColor || '#1e1b4b'} 0%, #000000 100%)` }}
                             >
                                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
-                                <div className="absolute top-0 right-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150" />
+                                <div className="absolute top-0 right-0 w-full h-full opacity-0" />
                                 <div className="relative z-10 drop-shadow-lg">
                                     {getCategoryIcon(event.category)}
                                 </div>
@@ -82,7 +81,7 @@ export default function EventCard({
 
                     {/* Event Details */}
                     <div className="flex-1 min-w-0 flex flex-col justify-center">
-                        <h3 className="font-semibold text-base mb-1 group-hover:text-purple-400 transition-colors line-clamp-2">
+                        <h3 className="font-semibold text-base mb-1 group-hover:text-emerald-400 transition-colors line-clamp-2">
                             {event.title}
                         </h3>
                         <p className="text-sm text-gray-400 mb-2">
@@ -100,7 +99,7 @@ export default function EventCard({
         );
     }
 
-    // Grid variant (default - original design)
+    // Grid
     return (
         <Card
             className={cn(
@@ -125,7 +124,6 @@ export default function EventCard({
                         className="w-full h-full flex items-center justify-center text-4xl relative overflow-hidden"
                         style={{ background: `linear-gradient(135deg, ${event.themeColor || '#1e1b4b'} 0%, #000000 100%)` }}
                     >
-                        {/* Cosmic Nebula Effect */}
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
                         <div className="absolute top-0 right-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150" />
 
@@ -157,7 +155,7 @@ export default function EventCard({
                     <Badge variant="outline" className="mb-2 border-white/10 text-gray-300">
                         {getCategoryIcon(event.category)} {getCategoryLabel(event.category)}
                     </Badge>
-                    <h3 className="font-semibold text-lg line-clamp-2 group-hover:text-purple-400 transition-colors leading-tight">
+                    <h3 className="font-semibold text-lg line-clamp-2 group-hover:text-emerald-400 transition-colors leading-tight">
                         {event.title}
                     </h3>
                 </div>
@@ -216,8 +214,6 @@ export default function EventCard({
                                 <Pencil className="w-4 h-4" />
                             </Button>
                         )}
-
-                        {/* Secondary button - delete / cancel */}
                         {onDelete && (
                             <Button
                                 variant="outline"

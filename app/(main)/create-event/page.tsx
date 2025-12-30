@@ -20,14 +20,11 @@ import { Badge } from "@/components/ui/badge";
 import UnsplashImagePicker from "@/components/unsplash-image-picker";
 import AIEventCreator from "./_components/ai-event-creator";
 import UpgradeModal from "@/components/upgrade-modal";
-
-// Import new modular components
 import EventDetailsCard from "./_components/event-details-card";
 import DateTimeCard from "./_components/date-time-card";
 import LocationCard from "./_components/location-card";
 import TicketPriceCard from "./_components/ticket-price-card";
 
-// HH:MM in 24h
 const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 const eventSchema = z.object({
@@ -58,7 +55,6 @@ export default function CreateEventPage() {
     const [showUpgradeModal, setShowUpgradeModal] = useState(false);
     const [upgradeReason, setUpgradeReason] = useState<"limit" | "color">("limit");
 
-    // Check if user has Pro plan
     const { has } = useAuth();
     const hasPro = has?.({ plan: "pro" }) ?? false;
 
@@ -95,15 +91,12 @@ export default function CreateEventPage() {
     const themeColor = watch("themeColor");
     const ticketType = watch("ticketType");
     const coverImage = watch("coverImage");
-
-    // Color presets - show all for Pro, only default for Free
     const colorPresets = [
-        "#1e3a8a", // Default color (always available)
+        "#1e3a8a",
         ...(hasPro ? ["#4c1d95", "#065f46", "#92400e", "#7f1d1d", "#831843"] : []),
     ];
 
     const handleColorClick = (color: string) => {
-        // If not default color and user doesn't have Pro
         if (color !== "#1e3a8a" && !hasPro) {
             setUpgradeReason("color");
             setShowUpgradeModal(true);
@@ -124,8 +117,6 @@ export default function CreateEventPage() {
         try {
             const start = combineDateTime(data.startDate!, data.startTime);
             const end = combineDateTime(data.endDate!, data.endTime);
-
-            // Manual validation for dates (since they are optional in schema but required for logic)
             if (!start || !end) {
                 toast.error("Please select both date and time for start and end.");
                 return;
@@ -135,14 +126,12 @@ export default function CreateEventPage() {
                 return;
             }
 
-            // Check event limit for Free users
             if (!hasPro && (currentUser?.freeEventsCreated ?? 0) >= 1) {
                 setUpgradeReason("limit");
                 setShowUpgradeModal(true);
                 return;
             }
 
-            // Check if trying to use custom color without Pro
             if (data.themeColor !== "#1e3a8a" && !hasPro) {
                 setUpgradeReason("color");
                 setShowUpgradeModal(true);
@@ -183,7 +172,6 @@ export default function CreateEventPage() {
         setValue("description", generatedData.description);
         setValue("category", generatedData.category);
         setValue("capacity", generatedData.suggestedCapacity);
-        // @ts-ignore
         setValue("ticketType", generatedData.suggestedTicketType);
         toast.success("Event details filled! Customize as needed.");
     };
@@ -206,13 +194,11 @@ export default function CreateEventPage() {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        {/* We can put other actions here */}
                         <AIEventCreator onEventGenerated={handleAIGenerate} />
                     </div>
                 </div>
 
                 <div className="w-full max-w-6xl grid lg:grid-cols-[320px_1fr] gap-8 md:gap-10">
-                    {/* LEFT: Image + Theme */}
                     <div className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-500 w-full max-w-[320px] mx-auto lg:mx-0">
                         <div
                             className="aspect-square w-full rounded-2xl overflow-hidden flex items-center justify-center cursor-pointer border-2 border-dashed border-white/20 bg-black/10 hover:bg-black/20 hover:border-white/40 transition-all group relative"

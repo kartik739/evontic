@@ -120,10 +120,10 @@ export default function SearchHeader() {
 
     return (
         <div className="w-full mx-auto mb-12 relative z-30">
-            <div className="bg-[#0f0f0f]/90 backdrop-blur-2xl border border-white/10 hover:border-purple-500/40 transition-all duration-300 p-2 rounded-3xl shadow-2xl flex flex-col md:flex-row items-stretch md:items-center gap-2">
+            <div className="bg-[#0f0f0f]/90 backdrop-blur-2xl border border-white/10 hover:border-emerald-500/40 transition-all duration-300 p-2 rounded-3xl shadow-2xl flex flex-col md:flex-row items-stretch md:items-center gap-2">
                 {/* Search Bar */}
                 <div className="relative flex-1 w-full" ref={searchRef}>
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-purple-400 transition-colors" />
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-emerald-400 transition-colors" />
                     <Input
                         placeholder="Search for events, artists, or venues..."
                         onChange={handleSearchInput}
@@ -144,7 +144,7 @@ export default function SearchHeader() {
                             >
                                 {searchLoading ? (
                                     <div className="p-8 flex items-center justify-center">
-                                        <Loader2 className="w-6 h-6 animate-spin text-purple-500" />
+                                        <Loader2 className="w-6 h-6 animate-spin text-emerald-500" />
                                     </div>
                                 ) : searchResults &&
                                     (searchResults as Doc<"events">[]).length > 0 ? (
@@ -159,11 +159,11 @@ export default function SearchHeader() {
                                                     onClick={() => handleEventClick(event.slug)}
                                                     className="w-full px-4 py-3 hover:bg-white/5 text-left transition-colors flex items-start gap-4 group"
                                                 >
-                                                    <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-xl shrink-0 group-hover:bg-purple-500/20 group-hover:text-purple-400 transition-colors">
+                                                    <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-xl shrink-0 group-hover:bg-emerald-500/20 group-hover:text-emerald-400 transition-colors">
                                                         <CategoryIcon name={getCategoryIcon(event.category)} className="w-5 h-5" />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <p className="font-medium text-white mb-1 line-clamp-1 group-hover:text-purple-400 transition-colors">
+                                                        <p className="font-medium text-white mb-1 line-clamp-1 group-hover:text-emerald-400 transition-colors">
                                                             {event.title}
                                                         </p>
                                                         <div className="flex items-center gap-3 text-xs text-gray-400">
@@ -216,13 +216,13 @@ export default function SearchHeader() {
                     >
                         <SelectTrigger className="w-full md:w-44 h-14 bg-white/5 hover:bg-white/10 transition-colors border-none focus:ring-0 text-gray-300 rounded-xl">
                             <div className="flex items-center gap-2">
-                                <MapPin className="w-4 h-4 text-purple-400" />
+                                <MapPin className="w-4 h-4 text-emerald-400" />
                                 <SelectValue placeholder="State" />
                             </div>
                         </SelectTrigger>
                         <SelectContent className="bg-[#121212] border-white/10 text-white rounded-xl shadow-xl">
                             {indianStates.map((state) => (
-                                <SelectItem key={state.isoCode} value={state.name} className="focus:bg-white/10 focus:text-purple-400">
+                                <SelectItem key={state.isoCode} value={state.name} className="focus:bg-white/10 focus:text-emerald-400">
                                     {state.name}
                                 </SelectItem>
                             ))}
@@ -242,13 +242,13 @@ export default function SearchHeader() {
                     >
                         <SelectTrigger className="w-full md:w-44 h-14 bg-white/5 hover:bg-white/10 transition-colors border-none focus:ring-0 text-gray-300 rounded-xl">
                             <div className="flex items-center gap-2">
-                                <MapPin className="w-4 h-4 text-pink-400" />
+                                <MapPin className="w-4 h-4 text-teal-400" />
                                 <SelectValue placeholder="City" />
                             </div>
                         </SelectTrigger>
                         <SelectContent className="bg-[#121212] border-white/10 text-white rounded-xl shadow-xl">
                             {cities.map((city) => (
-                                <SelectItem key={city.name} value={city.name} className="focus:bg-white/10 focus:text-pink-400">
+                                <SelectItem key={city.name} value={city.name} className="focus:bg-white/10 focus:text-teal-400">
                                     {city.name}
                                 </SelectItem>
                             ))}
@@ -258,7 +258,7 @@ export default function SearchHeader() {
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-14 w-full sm:w-14 bg-purple-600/20 hover:bg-purple-600/40 text-purple-400 hover:text-white rounded-xl transition-all border border-purple-500/30 shrink-0 flex items-center justify-center"
+                        className="h-14 w-full sm:w-14 bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 hover:text-white rounded-xl transition-all border border-emerald-500/30 shrink-0 flex items-center justify-center"
                     >
                         <Filter className="w-5 h-5" />
                     </Button>

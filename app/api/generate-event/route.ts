@@ -13,8 +13,6 @@ export async function POST(req: NextRequest) {
                 { status: 400 }
             );
         }
-
-        // Use gemini-2.5-flash - it's available in your account!
         const model = genAI.getGenerativeModel({
             model: "gemini-2.0-flash",
             generationConfig: {

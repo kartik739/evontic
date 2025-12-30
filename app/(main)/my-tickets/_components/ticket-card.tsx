@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { Calendar, MapPin, QrCode, ArrowRight, CornerUpLeft } from "lucide-react";
 import Image from "next/image";
-import QRCode from "react-qr-code"; // Ensure this package is installed
+import QRCode from "react-qr-code";
 import { Doc } from "@/convex/_generated/dataModel";
 
 import {
@@ -65,18 +65,18 @@ export default function TicketCard({ booking }: TicketCardProps) {
                             <div>
                                 <h3 className="font-bold text-lg text-white mb-1 line-clamp-1">{booking.event.title}</h3>
                                 <p className="text-gray-400 text-sm flex items-center gap-2 mb-3">
-                                    <MapPin className="w-3 h-3 text-purple-400" />
+                                    <MapPin className="w-3 h-3 text-emerald-400" />
                                     {booking.event.locationType === "online" ? "Online" : booking.event.city}
                                 </p>
                                 <div className="flex items-center gap-2 text-xs text-gray-300 bg-white/5 p-2 rounded-lg border border-white/5">
-                                    <Calendar className="w-3 h-3 text-purple-400" />
+                                    <Calendar className="w-3 h-3 text-emerald-400" />
                                     {format(booking.event.startDate, "EEE, MMM d • h:mm a")}
                                 </div>
                             </div>
 
-                            {/* Flip Button Prompt */}
+                            
                             <div
-                                className="w-full mt-4 text-purple-300 text-sm py-2 rounded-lg flex items-center justify-center gap-2 transition-colors group/btn cursor-pointer hover:text-white"
+                                className="w-full mt-4 text-emerald-300 text-sm py-2 rounded-lg flex items-center justify-center gap-2 transition-colors group/btn cursor-pointer hover:text-white"
                             >
                                 <QrCode className="w-4 h-4" />
                                 Tap for Ticket <ArrowRight className="w-3 h-3 opacity-50 group-hover/btn:translate-x-1 transition-transform" />
@@ -86,9 +86,9 @@ export default function TicketCard({ booking }: TicketCardProps) {
 
                     {/* BACK FACE */}
                     <div
-                        className="absolute inset-0 w-full h-full bg-white rounded-2xl overflow-hidden flex flex-col items-center justify-center p-6 text-center border-4 border-purple-500/20 [transform:rotateY(180deg)] [backface-visibility:hidden]"
+                        className="absolute inset-0 w-full h-full bg-white rounded-2xl overflow-hidden flex flex-col items-center justify-center p-6 text-center border-4 border-emerald-500/20 [transform:rotateY(180deg)] [backface-visibility:hidden]"
                     >
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500" />
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-orange-500" />
 
                         <button
                             onClick={(e) => { e.stopPropagation(); setIsFlipped(false); }}

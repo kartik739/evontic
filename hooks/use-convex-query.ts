@@ -7,13 +7,11 @@ export const useConvexQuery = (
     query: any,
     ...args: any[]
 ) => {
-    // @ts-ignore - useQuery types are tricky with spread args
     const result = useQuery(query, ...(args as any));
     const [data, setData] = useState<any>(undefined);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
-    // Use effect to handle the state changes based on the query result
     useEffect(() => {
         if (result === undefined) {
             setIsLoading(true);
@@ -50,7 +48,6 @@ export const useConvexMutation = <Mutation extends FunctionReference<"mutation">
         setError(null);
 
         try {
-            // @ts-ignore
             const response = await mutationFn(args);
             setData(response);
             return response;

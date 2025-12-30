@@ -13,12 +13,12 @@ export default function HowItWorksPage() {
             description: "Browse through thousands of events in your area or online. Filter by category, date, or location."
         },
         {
-            icon: <Ticket className="w-8 h-8 text-purple-400" />,
+            icon: <Ticket className="w-8 h-8 text-emerald-400" />,
             title: "Book Tickets",
             description: "Secure your spot instantly with our seamless checkout process. Receive digital tickets immediately."
         },
         {
-            icon: <QrCode className="w-8 h-8 text-pink-400" />,
+            icon: <QrCode className="w-8 h-8 text-teal-400" />,
             title: "Check In",
             description: "Show your QR code at the venue for quick, contactless entry. No printing required."
         },
@@ -31,7 +31,7 @@ export default function HowItWorksPage() {
 
     const organizerSteps = [
         {
-            icon: <Sparkles className="w-8 h-8 text-purple-400" />,
+            icon: <Sparkles className="w-8 h-8 text-emerald-400" />,
             title: "Create with AI",
             description: "Describe your event and let our AI generate details, images, and schedules for you."
         },
@@ -44,9 +44,8 @@ export default function HowItWorksPage() {
 
     return (
         <div className="min-h-screen bg-black text-white pt-24 pb-24 relative overflow-hidden">
-            {/* Background Ambience */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-purple-900/10 rounded-full blur-[120px]" />
+                <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-emerald-900/10 rounded-full blur-[120px]" />
                 <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-blue-900/10 rounded-full blur-[120px]" />
             </div>
 
@@ -118,7 +117,7 @@ export default function HowItWorksPage() {
                         ))}
                     </div>
                     <div className="mt-12 text-center">
-                        <Button asChild size="lg" className="bg-purple-600 hover:bg-purple-700 text-white border-0">
+                        <Button asChild size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white border-0">
                             <Link href="/create-event">Start Organizing</Link>
                         </Button>
                     </div>

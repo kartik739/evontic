@@ -19,7 +19,7 @@ export default function SavedEventsPage() {
     if (isLoading) {
         return (
             <div className="min-h-screen bg-black flex items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
             </div>
         );
     }
@@ -30,8 +30,8 @@ export default function SavedEventsPage() {
         <div className="min-h-screen bg-black text-white pt-24 pb-24 relative overflow-hidden">
             {/* Background Ambience */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[120px]" />
-                <div className="absolute top-[40%] right-[10%] w-[30%] h-[40%] bg-pink-900/10 rounded-full blur-[100px]" />
+                <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-emerald-900/10 rounded-full blur-[120px]" />
+                <div className="absolute top-[40%] right-[10%] w-[30%] h-[40%] bg-teal-900/10 rounded-full blur-[100px]" />
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-6">

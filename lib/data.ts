@@ -81,18 +81,15 @@ export const CATEGORIES: EventCategory[] = [
     },
 ];
 
-// Get category by ID
 export const getCategoryById = (id: string): EventCategory | undefined => {
     return CATEGORIES.find((cat) => cat.id === id);
 };
 
-// Get category label by ID
 export const getCategoryLabel = (id: string): string => {
     const category = getCategoryById(id);
     return category ? category.label : id;
 };
 
-// Get category icon by ID
 export const getCategoryIcon = (id: string): string => {
     const category = getCategoryById(id);
     return category ? category.icon : "📅";

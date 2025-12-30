@@ -7,15 +7,14 @@ import { MoveLeft, Rocket } from "lucide-react";
 export default function ComingSoonPage() {
     return (
         <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
-            {/* Background Ambience */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[120px]" />
+                <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] bg-emerald-900/10 rounded-full blur-[120px]" />
                 <div className="absolute bottom-[20%] right-[10%] w-[30%] h-[50%] bg-blue-900/10 rounded-full blur-[100px]" />
             </div>
 
             <div className="relative z-10 text-center max-w-2xl mx-auto space-y-8">
                 <div className="w-24 h-24 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-8 animate-pulse">
-                    <Rocket className="w-12 h-12 text-purple-400" />
+                    <Rocket className="w-12 h-12 text-emerald-400" />
                 </div>
 
                 <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-linear-to-r from-white to-gray-400">

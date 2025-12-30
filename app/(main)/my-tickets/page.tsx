@@ -14,7 +14,6 @@ import Link from "next/link";
 import EventCard from "@/components/event-card";
 import TicketCard from "./_components/ticket-card";
 
-// Define a type for registration with event populated
 type RegistrationWithEvent = Doc<"registrations"> & { event: Doc<"events"> };
 
 export default function MyTicketsPage() {
@@ -27,7 +26,7 @@ export default function MyTicketsPage() {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-black">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
             </div>
         );
     }
@@ -48,9 +47,8 @@ export default function MyTicketsPage() {
     return (
         <div className="min-h-screen bg-black text-white p-6 md:p-8 pt-24 md:pt-32 pb-24 relative overflow-hidden">
 
-            {/* Background Ambience */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[120px]" />
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-900/10 rounded-full blur-[120px]" />
                 <div className="absolute top-[20%] right-[-10%] w-[30%] h-[50%] bg-blue-900/10 rounded-full blur-[100px]" />
             </div>
 
@@ -62,7 +60,7 @@ export default function MyTicketsPage() {
                             animate={{ opacity: 1, y: 0 }}
                             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-4"
                         >
-                            <Receipt className="w-4 h-4 text-purple-400" />
+                            <Receipt className="w-4 h-4 text-emerald-400" />
                             <span className="text-sm font-medium text-gray-300">
                                 Manage your bookings
                             </span>
@@ -90,7 +88,6 @@ export default function MyTicketsPage() {
                     </motion.div>
                 </div>
 
-                {/* Upcoming Tickets */}
                 {upcomingTickets && upcomingTickets.length > 0 && (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -98,7 +95,7 @@ export default function MyTicketsPage() {
                         transition={{ delay: 0.3 }}
                     >
                         <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                            <Sparkles className="w-5 h-5 text-purple-400" />
+                            <Sparkles className="w-5 h-5 text-emerald-400" />
                             Upcoming Events
                         </h2>
 
@@ -159,7 +156,7 @@ export default function MyTicketsPage() {
                                 <p className="text-gray-400">
                                     Register for events to see your tickets here
                                 </p>
-                                <Button asChild className="gap-2 bg-purple-600 hover:bg-purple-700 text-white border-0">
+                                <Button asChild className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white border-0">
                                     <Link href="/explore">
                                         <Ticket className="w-4 h-4" /> Browse Events
                                     </Link>

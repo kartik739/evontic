@@ -42,7 +42,6 @@ export default function Header() {
 
     const { has } = useAuth();
     const { openUserProfile } = useClerk();
-    // @ts-ignore - Clerk types for `has` might not be updated or require specific setup
     const hasPro = has?.({ plan: "pro" });
 
     return (
@@ -59,9 +58,8 @@ export default function Header() {
                             className="w-full h-11"
                             priority
                         />
-                        {/* <span className="text-purple-500 text-2xl font-bold">evontic*</span> */}
                         {hasPro && (
-                            <Badge className="bg-linear-to-r from-pink-500 to-orange-500 gap-1 text-white ml-2 md:ml-3">
+                            <Badge className="bg-linear-to-r from-teal-500 to-orange-500 gap-1 text-white ml-2 md:ml-3">
                                 <Crown className="w-3 h-3" />
                                 <span className="hidden sm:inline">Pro</span>
                             </Badge>
@@ -75,7 +73,7 @@ export default function Header() {
 
                     {/* Right Side Actions */}
                     <div className="flex items-center gap-2">
-                        {/* Mobile Search Toggle (Modal) */}
+                        {/* Mobile Search Toggle */}
                         {pathname !== "/explore" && (
                             <Dialog open={isMobileSearchOpen} onOpenChange={setIsMobileSearchOpen}>
                                 <DialogTrigger asChild>

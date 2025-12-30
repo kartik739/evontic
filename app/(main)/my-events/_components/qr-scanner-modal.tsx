@@ -53,7 +53,6 @@ export default function QRScannerModal({ isOpen, onClose }: QRScannerModalProps)
             try {
                 console.log("Initializing QR scanner...");
 
-                // Check camera permissions first
                 try {
                     await navigator.mediaDevices.getUserMedia({ video: true });
                     console.log("Camera permission granted");
@@ -63,8 +62,6 @@ export default function QRScannerModal({ isOpen, onClose }: QRScannerModalProps)
                     return;
                 }
 
-                // Dynamically import the library
-                // @ts-ignore
                 const { Html5QrcodeScanner } = await import("html5-qrcode");
 
                 if (!mounted) return;
@@ -79,10 +76,9 @@ export default function QRScannerModal({ isOpen, onClose }: QRScannerModalProps)
                         aspectRatio: 1.0,
                         showTorchButtonIfSupported: true,
                         videoConstraints: {
-                            facingMode: "environment", // Use back camera on mobile
+                            facingMode: "environment",
                         },
-                    },
-          /* verbose= */ false
+                    }, false
                 );
 
                 const onScanSuccess = (decodedText: string) => {
@@ -94,7 +90,6 @@ export default function QRScannerModal({ isOpen, onClose }: QRScannerModalProps)
                 };
 
                 const onScanError = (error: any) => {
-                    // Only log actual errors, not "no QR code found" messages
                     if (error && !error.includes("NotFoundException")) {
                         console.debug("Scan error:", error);
                     }
@@ -129,7 +124,7 @@ export default function QRScannerModal({ isOpen, onClose }: QRScannerModalProps)
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
-                        <QrCode className="w-5 h-5 text-purple-500" />
+                        <QrCode className="w-5 h-5 text-emerald-500" />
                         Check-In Attendee
                     </DialogTitle>
                     <DialogDescription>
@@ -148,7 +143,7 @@ export default function QRScannerModal({ isOpen, onClose }: QRScannerModalProps)
                         ></div>
                         {!scannerReady && (
                             <div className="flex items-center justify-center py-4">
-                                <Loader2 className="w-6 h-6 animate-spin text-purple-500" />
+                                <Loader2 className="w-6 h-6 animate-spin text-emerald-500" />
                                 <span className="ml-2 text-sm text-muted-foreground">
                                     Starting camera...
                                 </span>

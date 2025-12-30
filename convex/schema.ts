@@ -2,36 +2,26 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-    // Users table
     users: defineTable({
-        // Clerk auth
         email: v.string(),
-        tokenIdentifier: v.string(), // Clerk user ID for auth
+        tokenIdentifier: v.string(),
         name: v.string(),
         imageUrl: v.optional(v.string()),
-
-        // Onboarding
         hasCompletedOnboarding: v.boolean(),
-
-        // Attendee preferences (from onboarding)
         location: v.optional(
             v.object({
                 city: v.string(),
-                state: v.optional(v.string()), // Added state field
+                state: v.optional(v.string()),
                 country: v.string(),
             })
         ),
-        interests: v.optional(v.array(v.string())), // Min 3 categories
+        interests: v.optional(v.array(v.string())),
+        freeEventsCreated: v.number(),
 
-        // Organizer tracking (User Subscription)
-        freeEventsCreated: v.number(), // Track free event limit (1 free)
-
-        // Timestamps
         createdAt: v.number(),
         updatedAt: v.number(),
-    }).index("by_token", ["tokenIdentifier"]), // Primary auth lookup
+    }).index("by_token", ["tokenIdentifier"]),
 
-    // Events table
     events: defineTable({
         title: v.string(),
         description: v.string(),
@@ -55,13 +45,13 @@ export default defineSchema({
         venue: v.optional(v.string()),
         address: v.optional(v.string()),
         city: v.string(),
-        state: v.optional(v.string()), // Added state field
+        state: v.optional(v.string()),
         country: v.string(),
 
         // Capacity & Ticketing
         capacity: v.number(),
         ticketType: v.union(v.literal("free"), v.literal("paid")),
-        ticketPrice: v.optional(v.number()), // Paid at event offline
+        ticketPrice: v.optional(v.number()),
         registrationCount: v.number(),
 
         // Customization
@@ -88,7 +78,7 @@ export default defineSchema({
         attendeeEmail: v.string(),
 
         // QR Code for entry
-        qrCode: v.string(), // Unique ID for QR
+        qrCode: v.string(),
 
         // Check-in
         checkedIn: v.boolean(),

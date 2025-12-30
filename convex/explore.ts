@@ -1,7 +1,6 @@
 import { query } from "./_generated/server";
 import { v } from "convex/values";
 
-// Get featured events (high registration count or recent)
 export const getFeaturedEvents = query({
     args: {
         limit: v.optional(v.number()),
@@ -40,7 +39,6 @@ export const getEventsByLocation = query({
             .filter((q) => q.gte(q.field("startDate"), now))
             .collect();
 
-        // Filter by city or state
         if (args.city) {
             events = events.filter(
                 (e) => e.city.toLowerCase() === args.city!.toLowerCase()
@@ -55,7 +53,6 @@ export const getEventsByLocation = query({
     },
 });
 
-// Get popular events (high registration count)
 export const getPopularEvents = query({
     args: {
         limit: v.optional(v.number()),
@@ -105,7 +102,6 @@ export const getCategoryCounts = query({
             .filter((q) => q.gte(q.field("startDate"), now))
             .collect();
 
-        // Count events by category
         const counts: Record<string, number> = {};
         events.forEach((event) => {
             counts[event.category] = (counts[event.category] || 0) + 1;

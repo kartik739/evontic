@@ -2,7 +2,6 @@ import { api } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-// Get event with detailed stats for dashboard
 export const getEventDashboard = query({
     args: { eventId: v.id("events") },
     handler: async (ctx, args) => {
@@ -37,7 +36,6 @@ export const getEventDashboard = query({
         ).length;
         const pendingCount = totalRegistrations - checkedInCount;
 
-        // Calculate revenue for paid events
         let totalRevenue = 0;
         if (event.ticketType === "paid" && event.ticketPrice) {
             totalRevenue = checkedInCount * event.ticketPrice;

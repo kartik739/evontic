@@ -134,7 +134,7 @@ export default function SearchLocationBar() {
                     <div className="absolute top-full mt-2 w-96 bg-background border rounded-lg shadow-lg z-50 max-h-[400px] overflow-y-auto">
                         {searchLoading ? (
                             <div className="p-4 flex items-center justify-center">
-                                <Loader2 className="w-5 h-5 animate-spin text-purple-500" />
+                                <Loader2 className="w-5 h-5 animate-spin text-emerald-500" />
                             </div>
                         ) : searchResults && (searchResults as Doc<"events">[]).length > 0 ? (
                             <div className="py-2">
@@ -193,7 +193,6 @@ export default function SearchLocationBar() {
                         <SelectValue placeholder="State" />
                     </SelectTrigger>
                     <SelectContent>
-                        {/* <SelectItem value="">State</SelectItem> */}
                         {indianStates.map((state) => (
                             <SelectItem key={state.isoCode} value={state.name}>
                                 {state.name}
@@ -217,7 +216,6 @@ export default function SearchLocationBar() {
                         <SelectValue placeholder="City" />
                     </SelectTrigger>
                     <SelectContent>
-                        {/* <SelectItem value="">City</SelectItem> */}
                         {cities.map((city) => (
                             <SelectItem key={city.name} value={city.name}>
                                 {city.name}

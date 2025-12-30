@@ -82,7 +82,7 @@ export const checkRegistration = query({
     },
 });
 
-// Get user's registrations (tickets)
+// Get user's registrations
 export const getMyRegistrations = query({
     handler: async (ctx) => {
         const user: any = await ctx.runQuery(api.users.getCurrentUser);

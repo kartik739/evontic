@@ -25,7 +25,7 @@ const Footer = () => {
                     {/* Column 1: Brand */}
                     <div className="space-y-4">
                         <Link href="/" className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-600 to-blue-600 flex items-center justify-center">
+                            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-emerald-600 to-blue-600 flex items-center justify-center">
                                 <span className="font-bold text-white text-xl">E</span>
                             </div>
                             <span className="text-xl font-bold bg-clip-text text-transparent bg-linear-to-r from-white to-white/70">
@@ -58,8 +58,7 @@ const Footer = () => {
                         <h3 className="font-semibold text-white mb-6">For Creators</h3>
                         <ul className="space-y-3 text-sm text-gray-400">
                             <li><FooterLink href="/create-event">Create Event</FooterLink></li>
-                            <li><FooterLink href="/my-events">Organizer Dashboard</FooterLink></li>
-                            {/* <li><FooterLink href="/resources">Resources</FooterLink></li> */}
+                            <li><FooterLink href="/my-events">Organizer Dashboard</FooterLink></li>\
                             <li><FooterLink href="/community">Community</FooterLink></li>
                         </ul>
                     </div>
@@ -76,7 +75,7 @@ const Footer = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Enter your email"
-                                className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-purple-500 w-full transition-colors"
+                                className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 w-full transition-colors"
                             />
                             <button type="submit" className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg transition-colors border border-white/10">
                                 <Sparkles className="w-4 h-4" />
@@ -104,9 +103,9 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
     return (
         <Link
             href={href}
-            className="hover:text-purple-400 transition-colors flex items-center gap-2 group"
+            className="hover:text-emerald-400 transition-colors flex items-center gap-2 group"
         >
-            <span className="w-1 h-1 rounded-full bg-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <span className="w-1 h-1 rounded-full bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
             {children}
         </Link>
     );
@@ -116,7 +115,7 @@ function SocialLink({ href, icon }: { href: string; icon: React.ReactNode }) {
     return (
         <a
             href={href}
-            className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/50 transition-all"
+            className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-emerald-600/20 hover:border-emerald-500/50 transition-all"
         >
             {icon}
         </a>

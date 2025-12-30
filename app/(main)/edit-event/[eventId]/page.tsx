@@ -27,7 +27,6 @@ import DateTimeCard from "@/app/(main)/create-event/_components/date-time-card";
 import LocationCard from "@/app/(main)/create-event/_components/location-card";
 import TicketPriceCard from "@/app/(main)/create-event/_components/ticket-price-card";
 
-// HH:MM in 24h
 const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 const eventSchema = z.object({
@@ -97,10 +96,8 @@ export default function EditEventPage() {
         formState: { errors },
     } = methods;
 
-    // Load existing event data when ready
     useEffect(() => {
         if (event && currentUser) {
-            // Authorized check
             if (event.organizerId !== currentUser._id) {
                 toast.error("You are not authorized to edit this event.");
                 router.push("/my-events");
@@ -214,7 +211,6 @@ export default function EditEventPage() {
         setValue("description", generatedData.description);
         setValue("category", generatedData.category);
         setValue("capacity", generatedData.suggestedCapacity);
-        // @ts-ignore
         setValue("ticketType", generatedData.suggestedTicketType);
         toast.success("Event details filled! Customize as needed.");
     };
@@ -222,7 +218,7 @@ export default function EditEventPage() {
     if (isEventLoading) {
         return (
             <div className="min-h-screen bg-black flex items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
             </div>
         );
     }

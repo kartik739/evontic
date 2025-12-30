@@ -18,7 +18,6 @@ function Calendar({
     classNames,
     showOutsideDays = true,
     captionLayout = "label",
-    // @ts-ignore - Check if DayPicker props have buttonVariant or if it's custom
     buttonVariant = "ghost",
     formatters,
     components,
@@ -111,7 +110,6 @@ function Calendar({
             }}
             components={{
                 Root: ({ className, ...props }) => {
-                    // @ts-ignore - rootRef not in basic div props but used by DayPicker
                     return (<div data-slot="calendar" {...props} className={cn(className)} />);
                 },
                 Chevron: ({ className, orientation, ...props }) => {
@@ -126,7 +124,6 @@ function Calendar({
                     return (<ChevronDownIcon className={cn("size-4", className)} {...props} />);
                 },
                 DayButton: CalendarDayButton,
-                // @ts-ignore
                 WeekNumber: ({ children, ...props }) => {
                     return (
                         <td {...props}>
