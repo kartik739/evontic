@@ -14,6 +14,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CATEGORIES } from "@/lib/data";
 import { Pencil, AlignLeft, Tag } from "lucide-react";
+import { CategoryIcon } from "@/components/category-icon";
 
 export default function EventDetailsCard() {
     const { register, control, formState: { errors } } = useFormContext();
@@ -61,10 +62,8 @@ export default function EventDetailsCard() {
                                 <SelectContent>
                                     {CATEGORIES.map((cat) => (
                                         <SelectItem key={cat.id} value={cat.id}>
-                                            import {CategoryIcon} from "@/components/category-icon";
-                                            // ...
                                             <span className="flex items-center gap-2">
-                                                <CategoryIcon name={cat.icon} className="w-4 h-4" /> {cat.label}
+                                                <CategoryIcon name={cat.icon} className="w-4 h-4 shrink-0" /> {cat.label}
                                             </span>
                                         </SelectItem>
                                     ))}

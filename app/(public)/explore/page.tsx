@@ -13,6 +13,7 @@ import { CATEGORIES } from "@/lib/data";
 import Autoplay from "embla-carousel-autoplay";
 import EventCard from "@/components/event-card";
 import SearchHeader from "@/components/explore/search-header";
+import { CategoryIcon } from "@/components/category-icon";
 import { motion } from "framer-motion";
 
 export default function ExplorePage() {
@@ -140,9 +141,7 @@ export default function ExplorePage() {
                                         onClick={() => handleCategoryClick(category.id)}
                                         className="group relative overflow-hidden p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-purple-500/50 hover:bg-white/10 transition-all text-left"
                                     >
-                                        import {CategoryIcon} from "@/components/category-icon";
 
-                                        // ... inside component render ...
                                         <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300 origin-left text-purple-400">
                                             <CategoryIcon name={category.icon} className="w-10 h-10" />
                                         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, MapPin, Users, Trash2, X, QrCode, Eye, Pencil } from "lucide-react";
+import { Calendar, MapPin, Users, Trash2, X, QrCode, Eye, Pencil, Heart } from "lucide-react";
 import { format } from "date-fns";
 import Image from "next/image";
 import { getCategoryIcon, getCategoryLabel } from "@/lib/data";
@@ -10,6 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { MouseEvent } from "react";
 import { cn } from "@/lib/utils";
+import { api } from "@/convex/_generated/api";
+import { useMutation, useQuery } from "convex/react";
+import { toast } from "sonner";
 
 interface EventCardProps {
     event: Doc<"events">;
@@ -30,6 +33,19 @@ export default function EventCard({
     action = null, // "event" | "ticket" | null
     className = "",
 }: EventCardProps) {
+    const toggleSave = useMutation(api.savedEvents.toggleSavedEvent);
+    const isSaved = useQuery(api.savedEvents.isEventSaved, { eventId: event._id });
+
+    const handleToggleSave = async () => {
+        try {
+            const saved = await toggleSave({ eventId: event._id });
+            toast.success(saved ? "Event saved" : "Event removed from saved");
+        } catch (error) {
+            console.error("Failed to save event", error);
+            toast.error("Failed to save event. Please try again.");
+        }
+    };
+
     // List variant (compact horizontal layout)
     if (variant === "list") {
         return (
@@ -118,7 +134,18 @@ export default function EventCard({
                         </div>
                     </div>
                 )}
-                <div className="absolute top-3 right-3">
+                <div className="absolute top-3 right-3 flex gap-2">
+                    <Button
+                        className={cn("h-8 w-8 rounded-full bg-black/50 backdrop-blur hover:bg-black/70 border-none", isSaved && "text-red-500 hover:text-red-400")}
+                        size="icon"
+                        variant="ghost"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleToggleSave();
+                        }}
+                    >
+                        <Heart className={cn("w-4 h-4", isSaved && "fill-current")} />
+                    </Button>
                     <Badge variant="secondary" className="bg-black/50 backdrop-blur text-white border-none">
                         {event.ticketType === "free" ? "Free" : "Paid"}
                     </Badge>

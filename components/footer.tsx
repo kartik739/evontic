@@ -47,9 +47,9 @@ const Footer = () => {
                         <h3 className="font-semibold text-white mb-6">Product</h3>
                         <ul className="space-y-3 text-sm text-gray-400">
                             <li><FooterLink href="/explore">Explore Events</FooterLink></li>
-                            <li><FooterLink href="/coming-soon">How it Works</FooterLink></li>
-                            <li><FooterLink href="/coming-soon">Pricing</FooterLink></li>
-                            <li><FooterLink href="/coming-soon">Features</FooterLink></li>
+                            <li><FooterLink href="/how-it-works">How it Works</FooterLink></li>
+                            <li><FooterLink href="/pricing">Pricing</FooterLink></li>
+                            <li><FooterLink href="/features">Features</FooterLink></li>
                         </ul>
                     </div>
 
@@ -59,8 +59,8 @@ const Footer = () => {
                         <ul className="space-y-3 text-sm text-gray-400">
                             <li><FooterLink href="/create-event">Create Event</FooterLink></li>
                             <li><FooterLink href="/my-events">Organizer Dashboard</FooterLink></li>
-                            <li><FooterLink href="/coming-soon">Resources</FooterLink></li>
-                            <li><FooterLink href="/coming-soon">Community</FooterLink></li>
+                            {/* <li><FooterLink href="/resources">Resources</FooterLink></li> */}
+                            <li><FooterLink href="/community">Community</FooterLink></li>
                         </ul>
                     </div>
 
@@ -83,8 +83,8 @@ const Footer = () => {
                             </button>
                         </form>
                         <div className="mt-8 text-xs text-gray-500 space-x-4">
-                            <Link href="/coming-soon" className="hover:text-gray-300 transition-colors">Privacy Policy</Link>
-                            <Link href="/coming-soon" className="hover:text-gray-300 transition-colors">Terms of Service</Link>
+                            <Link href="/privacy" className="hover:text-gray-300 transition-colors">Privacy Policy</Link>
+                            <Link href="/terms" className="hover:text-gray-300 transition-colors">Terms of Service</Link>
                         </div>
                     </div>
                 </div>
