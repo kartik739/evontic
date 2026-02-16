@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:convex": "node build-with-convex.js",
     "start": "next start",
     "lint": "eslint"
   },
