@@ -16,12 +16,16 @@ import {
     ExternalLink,
     Loader2,
     CheckCircle,
+    ArrowLeft,
+    Heart,
+    ArrowRight,
 } from "lucide-react";
 import { useConvexQuery } from "@/hooks/use-convex-query";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
 import { Doc, Id } from "@/convex/_generated/dataModel";
+import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,16 +34,7 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getCategoryIcon, getCategoryLabel } from "@/lib/data";
 import RegisterModal from "./_components/register-model";
-
-// Utility function to darken a color
-function darkenColor(color: string, amount: number) {
-    const colorWithoutHash = color.replace("#", "");
-    const num = parseInt(colorWithoutHash, 16);
-    const r = Math.max(0, (num >> 16) - amount * 255);
-    const g = Math.max(0, ((num >> 8) & 0x00ff) - amount * 255);
-    const b = Math.max(0, (num & 0x0000ff) - amount * 255);
-    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
-}
+import { cn } from "@/lib/utils";
 
 export default function EventDetailPage() {
     const params = useParams();
@@ -57,6 +52,8 @@ export default function EventDetailPage() {
         api.registrations.checkRegistration,
         event?._id ? { eventId: event._id } : "skip"
     );
+
+    const [isSaved, setIsSaved] = useState(false);
 
     const handleShare = async () => {
         const url = window.location.href;
@@ -77,6 +74,42 @@ export default function EventDetailPage() {
         }
     };
 
+    const handleAddToCalendar = () => {
+        if (!event) return;
+
+        const startTime = new Date(event.startDate).toISOString().replace(/-|:|\.\d\d\d/g, "");
+        const endTime = new Date(event.endDate).toISOString().replace(/-|:|\.\d\d\d/g, "");
+
+        const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:${startTime}
+DTEND:${endTime}
+SUMMARY:${event.title}
+DESCRIPTION:${event.description.slice(0, 100)}...
+LOCATION:${event.venue ? `${event.venue}, ` : ""}${event.city}, ${event.country}
+END:VEVENT
+END:VCALENDAR`;
+
+        const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `${event.slug}.ics`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const handleSave = () => {
+        setIsSaved(!isSaved);
+        toast.success(isSaved ? "Removed from favorites" : "Saved to favorites!");
+    };
+
+    const handleViewProfile = () => {
+        toast.info("Organizer profiles are coming soon!");
+    };
+
     const handleRegister = () => {
         if (!user) {
             toast.error("Please sign in to register");
@@ -87,7 +120,7 @@ export default function EventDetailPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center bg-black">
                 <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
             </div>
         );
@@ -102,261 +135,322 @@ export default function EventDetailPage() {
     const isOrganizer = user?.id === event.organizerId;
 
     return (
-        <div
-            style={{
-                backgroundColor: event.themeColor || "#1e3a8a",
-            }}
-            className="min-h-screen py-8 -mt-6 md:-mt-16 lg:-mx-5"
-        >
-            <div className="max-w-7xl mx-auto px-8">
-                {/* Event Title & Info */}
-                <div className="mb-8">
-                    <Badge variant="secondary" className="mb-3">
-                        {getCategoryIcon(event.category)} {getCategoryLabel(event.category)}
-                    </Badge>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4">{event.title}</h1>
-                    <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
-                        <div className="flex items-center gap-2">
-                            <Calendar className="w-5 h-5" />
-                            <span>{format(event.startDate, "EEEE, MMMM dd, yyyy")}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Clock className="w-5 h-5" />
-                            <span>
-                                {format(event.startDate, "h:mm a")} -{" "}
-                                {format(event.endDate, "h:mm a")}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Hero Image */}
-                {event.coverImage && (
-                    <div className="relative h-[400px] rounded-2xl overflow-hidden mb-6">
-                        <Image
-                            src={event.coverImage}
-                            alt={event.title}
-                            fill
-                            className="object-cover"
-                            priority
-                        />
-                    </div>
+        <div className="min-h-screen bg-black text-white pb-20">
+            {/* Immersive Hero Section */}
+            <div className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
+                {/* Background Image with Blur */}
+                {event.coverImage ? (
+                    <Image
+                        src={event.coverImage}
+                        alt="Background"
+                        fill
+                        className="object-cover blur-[50px] opacity-50 scale-110"
+                        priority
+                    />
+                ) : (
+                    <div
+                        className="absolute inset-0 opacity-30"
+                        style={{ backgroundColor: event.themeColor }}
+                    />
                 )}
 
-                <div className="grid lg:grid-cols-[1fr_380px] gap-8">
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-linear-to-b from-black/30 via-black/60 to-black" />
+
+                <div className="relative container mx-auto h-full px-4 flex flex-col justify-end pb-12 z-10">
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="mb-6"
+                    >
+                        <Button
+                            variant="ghost"
+                            className="text-white/70 hover:text-white hover:bg-white/10 mb-6 pl-0"
+                            onClick={() => router.back()}
+                        >
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Back to Explore
+                        </Button>
+
+                        <div className="flex gap-2 mb-4">
+                            <Badge
+                                variant="secondary"
+                                className="bg-white/10 backdrop-blur-md text-white border-white/10 hover:bg-white/20"
+                            >
+                                {getCategoryIcon(event.category)} {getCategoryLabel(event.category)}
+                            </Badge>
+                            <Badge
+                                variant="outline"
+                                className={cn(
+                                    "border-white/10 text-white backdrop-blur-md",
+                                    event.ticketType === "free" ? "bg-green-500/20 text-green-200 border-green-500/20" : "bg-purple-500/20 text-purple-200 border-purple-500/20"
+                                )}
+                            >
+                                {event.ticketType === "free" ? "Free Event" : `Starts at ₹${event.ticketPrice}`}
+                            </Badge>
+                        </div>
+
+                        <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-linear-to-r from-white to-white/70 leading-tight mb-4 max-w-4xl">
+                            {event.title}
+                        </h1>
+
+                        <div className="flex flex-wrap items-center gap-6 text-gray-300 text-sm md:text-base">
+                            <div className="flex items-center gap-2">
+                                <Calendar className="w-5 h-5 text-purple-400" />
+                                <span>{format(event.startDate, "EEEE, MMMM dd, yyyy")}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <MapPin className="w-5 h-5 text-purple-400" />
+                                <span>{event.city}, {event.state || event.country}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Users className="w-5 h-5 text-purple-400" />
+                                <span>{event.registrationCount} attending</span>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+
+            <div className="container mx-auto px-4 -mt-10 relative z-20">
+                <div className="grid lg:grid-cols-[1fr_400px] gap-8">
                     {/* Main Content */}
                     <div className="space-y-8">
-                        {/* Description */}
-                        <Card
-                            className={"pt-0"}
-                            style={{
-                                backgroundColor: event.themeColor
-                                    ? darkenColor(event.themeColor, 0.04)
-                                    : "#1e3a8a",
-                            }}
-                        >
-                            <CardContent className="pt-6">
-                                <h2 className="text-2xl font-bold mb-4">About This Event</h2>
-                                <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">
-                                    {event.description}
-                                </p>
-                            </CardContent>
-                        </Card>
-
-                        {/* Location Details */}
-                        <Card
-                            className={"pt-0"}
-                            style={{
-                                backgroundColor: event.themeColor
-                                    ? darkenColor(event.themeColor, 0.04)
-                                    : "#1e3a8a",
-                            }}
-                        >
-                            <CardContent className="pt-6">
-                                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                                    <MapPin className="w-6 h-6 text-purple-500" />
-                                    Location
-                                </h2>
-
-                                <div className="space-y-3">
-                                    <p className="font-medium">
-                                        {event.city}, {event.state || event.country}
-                                    </p>
-                                    {event.address && (
-                                        <p className="text-sm text-muted-foreground">
-                                            {event.address}
-                                        </p>
-                                    )}
-                                    {event.venue && (
-                                        <Button variant="outline" asChild className="gap-2">
-                                            <a
-                                                href={event.venue}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                View on Map
-                                                <ExternalLink className="w-4 h-4" />
-                                            </a>
-                                        </Button>
-                                    )}
+                        {/* Event Image (Focus) */}
+                        {event.coverImage && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className="rounded-3xl overflow-hidden border border-white/10 shadow-2xl"
+                            >
+                                <div className="relative aspect-video">
+                                    <Image
+                                        src={event.coverImage}
+                                        alt={event.title}
+                                        fill
+                                        className="object-cover"
+                                        priority
+                                    />
                                 </div>
-                            </CardContent>
-                        </Card>
+                            </motion.div>
+                        )}
 
-                        {/* Organizer Info */}
-                        <Card
-                            className={"pt-0"}
-                            style={{
-                                backgroundColor: event.themeColor
-                                    ? darkenColor(event.themeColor, 0.04)
-                                    : "#1e3a8a",
-                            }}
+                        {/* About Section */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
                         >
-                            <CardContent className="pt-6">
-                                <h2 className="text-2xl font-bold mb-4">Organizer</h2>
-                                <div className="flex items-center gap-3">
-                                    <Avatar className="w-12 h-12">
-                                        <AvatarImage src="" />
-                                        <AvatarFallback>
-                                            {event.organizerName.charAt(0).toUpperCase()}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <p className="font-semibold">{event.organizerName}</p>
-                                        <p className="text-sm text-muted-foreground">
-                                            Event Organizer
-                                        </p>
+                            <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                                <CardContent className="p-8">
+                                    <h2 className="text-2xl font-bold mb-6 text-white">About This Event</h2>
+                                    <div className="prose prose-invert max-w-none text-gray-300 leading-relaxed whitespace-pre-wrap">
+                                        {event.description}
                                     </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </div>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
 
-                    {/* Sidebar - Registration Card */}
-                    <div className="lg:sticky lg:top-24 h-fit">
-                        <Card
-                            className={`overflow-hidden py-0`}
-                            style={{
-                                backgroundColor: event.themeColor
-                                    ? darkenColor(event.themeColor, 0.04)
-                                    : "#1e3a8a",
-                            }}
+                        {/* Location Section */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 }}
                         >
-                            <CardContent className="p-6 space-y-4">
-                                {/* Price */}
-                                <div>
-                                    <p className="text-sm text-muted-foreground mb-1">Price</p>
-                                    <p className="text-3xl font-bold">
-                                        {event.ticketType === "free"
-                                            ? "Free"
-                                            : `₹${event.ticketPrice}`}
-                                    </p>
-                                    {event.ticketType === "paid" && (
-                                        <p className="text-xs text-muted-foreground mt-1">
-                                            Pay at event offline
-                                        </p>
-                                    )}
-                                </div>
-
-                                <Separator />
-
-                                {/* Stats */}
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2 text-muted-foreground">
-                                            <Users className="w-4 h-4" />
-                                            <span className="text-sm">Attendees</span>
+                            <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                                <CardContent className="p-8">
+                                    <h2 className="text-2xl font-bold mb-6 text-white flex items-center gap-2">
+                                        <MapPin className="w-6 h-6 text-purple-400" />
+                                        Location & Venue
+                                    </h2>
+                                    <div className="flex flex-col md:flex-row gap-6 md:items-center justify-between">
+                                        <div className="space-y-2">
+                                            <h3 className="text-xl font-semibold text-white">{event.venue || "Venue Details"}</h3>
+                                            <p className="text-gray-400">
+                                                {event.address ? event.address + ", " : ""}
+                                                {event.city}, {event.state || event.country}
+                                            </p>
                                         </div>
-                                        <p className="font-semibold">
-                                            {event.registrationCount} / {event.capacity}
-                                        </p>
+
+                                        {event.venue && (
+                                            <Button variant="outline" className="border-white/10 hover:bg-white/5 hover:text-white" asChild>
+                                                <a
+                                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.venue + " " + event.city)}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    Open in Maps <ExternalLink className="w-4 h-4 ml-2" />
+                                                </a>
+                                            </Button>
+                                        )}
                                     </div>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
 
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2 text-muted-foreground">
-                                            <Calendar className="w-4 h-4" />
-                                            <span className="text-sm">Date</span>
-                                        </div>
-                                        <p className="font-semibold text-sm">
-                                            {format(event.startDate, "MMM dd")}
-                                        </p>
-                                    </div>
-
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2 text-muted-foreground">
-                                            <Clock className="w-4 h-4" />
-                                            <span className="text-sm">Time</span>
-                                        </div>
-                                        <p className="font-semibold text-sm">
-                                            {format(event.startDate, "h:mm a")}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <Separator />
-
-                                {/* Registration Button */}
-                                {registration ? (
-                                    <div className="space-y-3">
-                                        <div className="flex items-center gap-2 text-green-600 bg-green-50 p-3 rounded-lg">
-                                            <CheckCircle className="w-5 h-5" />
-                                            <span className="font-medium">
-                                                You&apos;re registered!
-                                            </span>
+                        {/* Organizer Section */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5 }}
+                        >
+                            <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                                <CardContent className="p-8">
+                                    <h2 className="text-2xl font-bold mb-6 text-white">Organizer</h2>
+                                    <div className="flex items-center gap-4">
+                                        <Avatar className="w-16 h-16 border-2 border-purple-500/20">
+                                            <AvatarImage src="" />
+                                            <AvatarFallback className="bg-purple-500/20 text-purple-200 text-xl font-bold">
+                                                {event.organizerName.charAt(0).toUpperCase()}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <p className="font-bold text-lg text-white">{event.organizerName}</p>
+                                            <p className="text-gray-400">Event Organizer</p>
                                         </div>
                                         <Button
-                                            className="w-full gap-2"
-                                            onClick={() => router.push("/my-tickets")}
+                                            variant="ghost"
+                                            className="ml-auto text-purple-400 hover:text-purple-300 hover:bg-purple-500/10"
+                                            onClick={() => router.push(`/organizer/${event.organizerId}`)}
                                         >
-                                            <Ticket className="w-4 h-4" />
-                                            View My Ticket
+                                            View Profile
                                         </Button>
                                     </div>
-                                ) : isEventPast ? (
-                                    <Button className="w-full" disabled>
-                                        Event Ended
-                                    </Button>
-                                ) : isEventFull ? (
-                                    <Button className="w-full" disabled>
-                                        Event Full
-                                    </Button>
-                                ) : isOrganizer ? (
-                                    <Button
-                                        className="w-full"
-                                        onClick={() => router.push(`/events/${event.slug}/manage`)}
-                                    >
-                                        Manage Event
-                                    </Button>
-                                ) : (
-                                    <Button className="w-full gap-2" onClick={handleRegister}>
-                                        <Ticket className="w-4 h-4" />
-                                        Register for Event
-                                    </Button>
-                                )}
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    </div>
 
-                                {/* Share Button */}
+                    {/* Sticky Sidebar */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="lg:sticky lg:top-24 h-fit space-y-4"
+                    >
+                        <Card className="bg-[#0a0a0a] border border-white/10 shadow-2xl overflow-hidden">
+                            <div className="h-2 bg-linear-to-r from-purple-500 via-pink-500 to-orange-500" />
+                            <CardContent className="p-6 space-y-6">
+                                {/* Date and Time */}
+                                <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-white">Date & Time</h3>
+                                    <div className="flex items-start gap-4 text-gray-300">
+                                        <Calendar className="w-5 h-5 text-gray-500 mt-0.5" />
+                                        <div>
+                                            <p className="font-medium text-white">{format(event.startDate, "EEEE, MMMM dd, yyyy")}</p>
+                                            <p className="text-sm text-gray-400">
+                                                {format(event.startDate, "h:mm a")} - {format(event.endDate, "h:mm a")}
+                                            </p>
+                                            <Button
+                                                variant="link"
+                                                className="h-auto p-0 text-purple-400 mt-1"
+                                                onClick={handleAddToCalendar}
+                                            >
+                                                Add to Calendar
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <Separator className="bg-white/10" />
+
+                                {/* Ticket Info */}
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-400">Ticket Price</span>
+                                        <span className="text-2xl font-bold text-white">
+                                            {event.ticketType === "free" ? "Free" : `₹${event.ticketPrice}`}
+                                        </span>
+                                    </div>
+                                    {event.ticketType === "paid" && (
+                                        <p className="text-xs text-gray-500 text-right">
+                                            *Payment to be collected at venue
+                                        </p>
+                                    )}
+                                </div>
+
+                                {/* Call to Action */}
+                                <div className="pt-2">
+                                    {registration ? (
+                                        <div className="space-y-3">
+                                            <div className="flex items-center gap-2 text-green-400 bg-green-500/10 p-3 rounded-lg border border-green-500/20">
+                                                <CheckCircle className="w-5 h-5" />
+                                                <span className="font-medium">
+                                                    You&apos;re registered!
+                                                </span>
+                                            </div>
+                                            <Button
+                                                className="w-full h-12 gap-2 bg-white text-black hover:bg-gray-200"
+                                                onClick={() => router.push("/my-tickets")}
+                                            >
+                                                <Ticket className="w-4 h-4" />
+                                                View Ticket
+                                            </Button>
+                                        </div>
+                                    ) : isEventPast ? (
+                                        <Button className="w-full h-12 bg-gray-800 text-gray-400 cursor-not-allowed" disabled>
+                                            Event Ended
+                                        </Button>
+                                    ) : isEventFull ? (
+                                        <Button className="w-full h-12 bg-gray-800 text-gray-400 cursor-not-allowed" disabled>
+                                            Sold Out
+                                        </Button>
+                                    ) : isOrganizer ? (
+                                        <Button
+                                            className="w-full h-12 bg-white/10 hover:bg-white/20 text-white"
+                                            onClick={() => router.push(`/events/${event.slug}/manage`)}
+                                        >
+                                            Manage Event
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            className="w-full h-12 gap-2 text-lg font-semibold bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg shadow-purple-500/25"
+                                            onClick={handleRegister}
+                                        >
+                                            Register Now
+                                            <ArrowRight className="w-5 h-5" />
+                                        </Button>
+                                    )}
+                                </div>
+
                                 <Button
                                     variant="outline"
-                                    className="w-full gap-2"
+                                    className="w-full gap-2 border-white/10 hover:bg-white/5 hover:text-white"
                                     onClick={handleShare}
                                 >
                                     <Share2 className="w-4 h-4" />
-                                    Share Event
+                                    Share
                                 </Button>
+                                <Button
+                                    variant="outline"
+                                    className={cn(
+                                        "w-full gap-2 border-white/10 hover:bg-white/5 hover:text-white",
+                                        isSaved && "text-red-500 border-red-500/20 bg-red-500/10 hover:bg-red-500/20 hover:text-red-400"
+                                    )}
+                                    onClick={handleSave}
+                                >
+                                    <Heart className={cn("w-4 h-4", isSaved && "fill-current")} />
+                                    {isSaved ? "Saved" : "Save"}
+                                </Button>
+
                             </CardContent>
                         </Card>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
 
             {/* Register Modal */}
-            {showRegisterModal && (
-                <RegisterModal
-                    event={event}
-                    isOpen={showRegisterModal}
-                    onClose={() => setShowRegisterModal(false)}
-                />
-            )}
-        </div>
+            {
+                showRegisterModal && (
+                    <RegisterModal
+                        event={event}
+                        isOpen={showRegisterModal}
+                        onClose={() => setShowRegisterModal(false)}
+                    />
+                )
+            }
+        </div >
     );
 }
+

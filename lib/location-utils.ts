@@ -16,45 +16,54 @@ export function parseLocationSlug(slug: string): LocationSlugResult {
         return { city: null, state: null, isValid: false };
     }
 
-    const parts = slug.split("-");
-
-    // Must have at least 2 parts (city-state)
-    if (parts.length < 2) {
-        return { city: null, state: null, isValid: false };
-    }
-
-    // Parse city (first part)
-    const cityName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
-
-    // Parse state (remaining parts joined)
-    const stateName = parts
-        .slice(1)
-        .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-        .join(" ");
-
     // Get all Indian states
     const indianStates = State.getStatesOfCountry("IN");
 
-    // Validate state exists
-    const stateObj = indianStates.find(
-        (s) => s.name.toLowerCase() === stateName.toLowerCase()
-    );
+    // Sort states by length (descending) to match longer names first (e.g. "West Bengal" before "Bengal" if that existed)
+    const sortedStates = indianStates.sort((a, b) => b.name.length - a.name.length);
 
-    if (!stateObj) {
+    let foundState: any = null;
+    let citySlugPart: string = "";
+
+    // Try to find a state suffix
+    for (const state of sortedStates) {
+        const stateSlug = state.name.toLowerCase().replace(/\s+/g, "-");
+
+        // Check if slug ends with this state
+        // We look for "-state-slug" at the end, or if the whole slug IS the state (though unlikely for city-state)
+        if (slug.endsWith(`-${stateSlug}`)) {
+            foundState = state;
+            // Extract city part (everything before the -state-slug)
+            citySlugPart = slug.substring(0, slug.lastIndexOf(`-${stateSlug}`));
+            break;
+        }
+    }
+
+    if (!foundState || !citySlugPart) {
         return { city: null, state: null, isValid: false };
     }
 
-    // Validate city exists in that state
-    const cities = City.getCitiesOfState("IN", stateObj.isoCode);
-    const cityExists = cities.some(
-        (c) => c.name.toLowerCase() === cityName.toLowerCase()
-    );
+    // Convert city slug back to readable format (approximate)
+    // We can't know the exact casing or spacing without looking it up, but we can try to find it in the city list.
+    const cities = City.getCitiesOfState("IN", foundState.isoCode);
 
-    if (!cityExists) {
+    // Create a lookup for city slugs
+    const citySlug = citySlugPart.toLowerCase(); // "karol-bagh"
+
+    // Find a city that matches this slug
+    const foundCity = cities.find(c => {
+        const cSlug = c.name.toLowerCase().replace(/\s+/g, "-");
+        return cSlug === citySlug;
+    });
+
+    if (!foundCity) {
+        // Fallback: If strict city lookup fails (maybe custom location?), currently we return invalid.
+        // But for "Karol Bagh", it might not be in the standard list depending on the library version.
+        // Let's rely on the library check as requested by the original strictness.
         return { city: null, state: null, isValid: false };
     }
 
-    return { city: cityName, state: stateName, isValid: true };
+    return { city: foundCity.name, state: foundState.name, isValid: true };
 }
 
 /**

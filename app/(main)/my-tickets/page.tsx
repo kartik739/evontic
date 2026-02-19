@@ -1,56 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
-import { Calendar, MapPin, Loader2, Ticket } from "lucide-react";
-import { useConvexQuery, useConvexMutation } from "@/hooks/use-convex-query";
+import { Loader2, Ticket, Receipt, Sparkles } from "lucide-react";
+import { useConvexQuery } from "@/hooks/use-convex-query";
 import { api } from "@/convex/_generated/api";
-import { toast } from "sonner";
-import QRCode from "react-qr-code";
-import { Doc, Id } from "@/convex/_generated/dataModel";
+import { Doc } from "@/convex/_generated/dataModel";
+import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
 import Link from "next/link";
 import EventCard from "@/components/event-card";
+import TicketCard from "./_components/ticket-card";
 
 // Define a type for registration with event populated
 type RegistrationWithEvent = Doc<"registrations"> & { event: Doc<"events"> };
 
 export default function MyTicketsPage() {
     const router = useRouter();
-    const [selectedTicket, setSelectedTicket] = useState<RegistrationWithEvent | null>(null);
 
     const { data: registrations, isLoading } = useConvexQuery(
         api.registrations.getMyRegistrations
     );
 
-    const { mutate: cancelRegistration, isLoading: isCancelling } =
-        useConvexMutation(api.registrations.cancelRegistration);
-
-    const handleCancelRegistration = async (registrationId: string) => {
-        if (!window.confirm("Are you sure you want to cancel this registration?"))
-            return;
-
-        try {
-            await cancelRegistration({ registrationId: registrationId as Id<"registrations"> });
-            toast.success("Registration cancelled successfully.");
-        } catch (error: any) {
-            toast.error(error.message || "Failed to cancel registration");
-        }
-    };
-
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center bg-black">
                 <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
             </div>
         );
@@ -70,127 +46,130 @@ export default function MyTicketsPage() {
     );
 
     return (
-        <div className="min-h-screen pb-20 px-4">
-            <div className="max-w-7xl mx-auto">
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold mb-2">My Tickets</h1>
-                    <p className="text-muted-foreground">
-                        View and manage your event registrations
-                    </p>
+        <div className="min-h-screen bg-black text-white p-6 md:p-8 pt-24 md:pt-32 pb-24 relative overflow-hidden">
+
+            {/* Background Ambience */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[120px]" />
+                <div className="absolute top-[20%] right-[-10%] w-[30%] h-[50%] bg-blue-900/10 rounded-full blur-[100px]" />
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto space-y-12">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-4"
+                        >
+                            <Receipt className="w-4 h-4 text-purple-400" />
+                            <span className="text-sm font-medium text-gray-300">
+                                Manage your bookings
+                            </span>
+                        </motion.div>
+                        <motion.h1
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-linear-to-r from-white to-gray-400"
+                        >
+                            My Tickets
+                        </motion.h1>
+                    </div>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        <Button asChild variant="outline" className="border-white/10 hover:bg-white/5 hover:text-white">
+                            <Link href="/explore">
+                                <Ticket className="w-4 h-4 mr-2" />
+                                Browse Events
+                            </Link>
+                        </Button>
+                    </motion.div>
                 </div>
 
                 {/* Upcoming Tickets */}
                 {upcomingTickets && upcomingTickets.length > 0 && (
-                    <div className="mb-12">
-                        <h2 className="text-2xl font-bold mb-4">Upcoming Events</h2>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                    >
+                        <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                            <Sparkles className="w-5 h-5 text-purple-400" />
+                            Upcoming Events
+                        </h2>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {upcomingTickets.map((registration) => (
-                                <EventCard
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {upcomingTickets.map((registration, i) => (
+                                <motion.div
                                     key={registration._id}
-                                    event={registration.event}
-                                    action="ticket"
-                                    onClick={() => setSelectedTicket(registration)}
-                                    onDelete={() => handleCancelRegistration(registration._id)}
-                                />
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.3 + i * 0.1 }}
+                                >
+                                    <TicketCard booking={registration} />
+                                </motion.div>
                             ))}
                         </div>
-                    </div>
+                    </motion.div>
                 )}
 
                 {/* Past Tickets */}
                 {pastTickets && pastTickets.length > 0 && (
-                    <div>
-                        <h2 className="text-2xl font-bold mb-4">Past Events</h2>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 }}
+                    >
+                        <h2 className="text-2xl font-bold mb-6 text-gray-400">Past Events</h2>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {pastTickets.map((registration) => (
-                                <EventCard
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {pastTickets.map((registration, i) => (
+                                <motion.div
                                     key={registration._id}
-                                    event={registration.event}
-                                    action={null}
-                                    className="opacity-60"
-                                />
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: 0.5 + i * 0.1 }}
+                                >
+                                    <EventCard
+                                        event={registration.event}
+                                        action={null}
+                                        className="opacity-60 hover:opacity-100 transition-opacity"
+                                    />
+                                </motion.div>
                             ))}
                         </div>
-                    </div>
+                    </motion.div>
                 )}
 
                 {/* Empty State */}
                 {(!upcomingTickets || upcomingTickets.length === 0) && (!pastTickets || pastTickets.length === 0) && (
-                    <Card className="p-12 text-center">
-                        <div className="max-w-md mx-auto space-y-4">
-                            <div className="text-6xl mb-4">🎟️</div>
-                            <h2 className="text-2xl font-bold">No tickets yet</h2>
-                            <p className="text-muted-foreground">
-                                Register for events to see your tickets here
-                            </p>
-                            <Button asChild className="gap-2">
-                                <Link href="/explore">
-                                    <Ticket className="w-4 h-4" /> Browse Events
-                                </Link>
-                            </Button>
-                        </div>
-                    </Card>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3 }}
+                    >
+                        <Card className="p-12 text-center bg-white/5 border-white/10 backdrop-blur-sm">
+                            <div className="max-w-md mx-auto space-y-4">
+                                <div className="text-6xl mb-4 grayscale opacity-50">🎟️</div>
+                                <h2 className="text-2xl font-bold text-white">No tickets yet</h2>
+                                <p className="text-gray-400">
+                                    Register for events to see your tickets here
+                                </p>
+                                <Button asChild className="gap-2 bg-purple-600 hover:bg-purple-700 text-white border-0">
+                                    <Link href="/explore">
+                                        <Ticket className="w-4 h-4" /> Browse Events
+                                    </Link>
+                                </Button>
+                            </div>
+                        </Card>
+                    </motion.div>
                 )}
             </div>
-
-            {/* QR Code Modal */}
-            {selectedTicket && (
-                <Dialog
-                    open={!!selectedTicket}
-                    onOpenChange={() => setSelectedTicket(null)}
-                >
-                    <DialogContent className="sm:max-w-md">
-                        <DialogHeader>
-                            <DialogTitle>Your Ticket</DialogTitle>
-                        </DialogHeader>
-
-                        <div className="space-y-4">
-                            <div className="text-center">
-                                <p className="font-semibold mb-1">
-                                    {selectedTicket.attendeeName}
-                                </p>
-                                <p className="text-sm text-muted-foreground mb-4">
-                                    {selectedTicket.event.title}
-                                </p>
-                            </div>
-
-                            <div className="flex justify-center p-6 bg-white rounded-lg">
-                                <QRCode value={selectedTicket.qrCode} size={200} level="H" />
-                            </div>
-
-                            <div className="text-center">
-                                <p className="text-xs text-muted-foreground mb-1">Ticket ID</p>
-                                <p className="font-mono text-sm">{selectedTicket.qrCode}</p>
-                            </div>
-
-                            <div className="bg-muted p-4 rounded-lg space-y-2 text-sm">
-                                <div className="flex items-center gap-2">
-                                    <Calendar className="w-4 h-4" />
-                                    <span>
-                                        {format(selectedTicket.event.startDate, "PPP, h:mm a")}
-                                    </span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <MapPin className="w-4 h-4" />
-                                    <span>
-                                        {selectedTicket.event.locationType === "online"
-                                            ? "Online Event"
-                                            : `${selectedTicket.event.city}, ${selectedTicket.event.state ||
-                                            selectedTicket.event.country
-                                            }`}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <p className="text-xs text-muted-foreground text-center">
-                                Show this QR code at the event entrance for check-in
-                            </p>
-                        </div>
-                    </DialogContent>
-                </Dialog>
-            )}
         </div>
     );
 }
+

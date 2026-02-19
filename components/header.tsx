@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Building, Crown, Plus, Ticket } from "lucide-react";
+import { Building, Crown, Plus, Ticket, Heart } from "lucide-react";
 import { SignInButton, useAuth, UserButton } from "@clerk/nextjs";
 import { Authenticated, Unauthenticated } from "convex/react";
 import { BarLoader } from "react-spinners";
@@ -61,9 +61,9 @@ export default function Header() {
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => setShowUpgradeModal(true)}
+                                asChild
                             >
-                                Pricing
+                                <Link href="/pricing">Pricing</Link>
                             </Button>
                         )}
 
@@ -99,6 +99,11 @@ export default function Header() {
                                         label="My Events"
                                         labelIcon={<Building size={16} />}
                                         href="/my-events"
+                                    />
+                                    <UserButton.Link
+                                        label="Saved Events"
+                                        labelIcon={<Heart size={16} />}
+                                        href="/saved-events"
                                     />
                                     <UserButton.Action label="manageAccount" />
                                 </UserButton.MenuItems>

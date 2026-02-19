@@ -137,3 +137,59 @@
 .perspective-1000 {
   perspective: 1000px;
 }
+
+@keyframes gradient-x {
+
+  0%,
+  100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
+
+
+.animate-gradient-x {
+  animation: gradient-x 15s ease infinite;
+}
+
+/* Clerk Overrides */
+.cl-card,
+.cl-signIn-start,
+.cl-signUp-start,
+.cl-footer {
+  @apply bg-zinc-900/50 backdrop-blur-xl border border-white/10 shadow-2xl;
+}
+
+.cl-headerTitle,
+.cl-headerSubtitle,
+.cl-footerActionText,
+.cl-footerActionLink,
+.cl-dividerText,
+.cl-formFieldLabel,
+.cl-formHeaderTitle,
+.cl-formHeaderSubtitle,
+.cl-socialButtonsBlockButtonText,
+.cl-userButtonPopoverCard {
+  @apply text-white;
+}
+
+.cl-formFieldInput {
+  @apply bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-purple-500 transition-colors;
+}
+
+.cl-formButtonPrimary {
+  @apply bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0;
+}
+
+.cl-userButtonPopoverCard {
+  @apply bg-zinc-950 border border-white/10;
+}
+
+.cl-userButtonPopoverFooter {
+  display: none;
+}
