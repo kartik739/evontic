@@ -312,7 +312,7 @@ END:VCALENDAR`;
                                         <Button
                                             variant="ghost"
                                             className="ml-auto text-purple-400 hover:text-purple-300 hover:bg-purple-500/10"
-                                            onClick={handleViewProfile}
+                                            onClick={() => router.push(`/organizer/${event.organizerId}`)}
                                         >
                                             View Profile
                                         </Button>

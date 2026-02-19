@@ -2,7 +2,7 @@
 
 import { useFormContext, Controller } from "react-hook-form";
 import { format } from "date-fns";
-import { CalendarIcon, Clock, Calendar as CalendarIconLucide } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, Calendar as CalendarIconLucide } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,55 +21,60 @@ export default function DateTimeCard() {
     const endDate = watch("endDate");
 
     return (
-        <Card className="bg-white/5 border-white/10 backdrop-blur-sm overflow-hidden group hover:border-white/20 transition-colors">
-            <CardHeader className="bg-linear-to-r from-blue-900/30 to-black/20 border-b border-white/10 pb-4">
-                <CardTitle className="flex items-center gap-3 text-lg font-bold text-blue-100">
-                    <div className="p-2 rounded-lg bg-blue-500/20 ring-1 ring-blue-500/30">
-                        <CalendarIconLucide className="w-4 h-4 text-blue-400" />
+        <Card className="bg-zinc-900/50 border-white/10 backdrop-blur-xl overflow-hidden group hover:border-blue-500/20 transition-all duration-300 shadow-2xl">
+            <CardHeader className="border-b border-white/5 pb-6">
+                <CardTitle className="flex items-center gap-4 text-xl font-bold text-white">
+                    <div className="p-3 rounded-xl bg-blue-500/10 ring-1 ring-blue-500/20 group-hover:bg-blue-500/20 transition-colors">
+                        <CalendarIcon className="w-5 h-5 text-blue-400" />
                     </div>
-                    Date & Time
+                    <div>
+                        <span className="block text-lg">Date & Time</span>
+                        <span className="block text-sm font-normal text-muted-foreground">When will your event take place?</span>
+                    </div>
                 </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6 pt-6">
-                <div className="grid md:grid-cols-2 gap-6">
+            <CardContent className="space-y-8 pt-8 px-6 md:px-8">
+                <div className="grid md:grid-cols-2 gap-8">
                     {/* Start Date & Time */}
-                    <div className="space-y-4">
-                        <Label className="text-blue-300 font-medium">Starts</Label>
-                        <div className="space-y-3">
+                    <div className="space-y-3">
+                        <Label className="text-gray-200 text-base font-medium">Starts</Label>
+                        <div className="space-y-4">
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <Button
                                         variant="outline"
                                         className={cn(
-                                            "w-full justify-start text-left font-normal bg-black/20 border-white/10 hover:bg-white/5",
+                                            "w-full justify-start text-left font-normal bg-black/40 border-white/10 hover:bg-white/5 h-12 rounded-xl text-base",
                                             !startDate && "text-muted-foreground"
                                         )}
                                     >
-                                        <CalendarIcon className="mr-2 h-4 w-4 text-blue-400" />
+                                        <CalendarIcon className="mr-3 h-4 w-4 text-blue-400" />
                                         {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0 bg-zinc-950 border-white/10">
+                                <PopoverContent className="w-auto p-0 bg-zinc-900 border-white/10 shadow-xl">
                                     <Calendar
                                         mode="single"
                                         selected={startDate}
                                         onSelect={(date) => setValue("startDate", date)}
                                         initialFocus
+                                        className="p-3"
                                     />
                                 </PopoverContent>
                             </Popover>
 
                             <div className="relative">
-                                <Clock className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+                                <Clock className="absolute left-4 top-4 h-4 w-4 text-blue-400" />
                                 <Input
                                     type="time"
                                     {...register("startTime")}
-                                    className="pl-9 bg-black/20 border-white/10"
+                                    className="pl-11 bg-black/40 border-white/10 h-12 rounded-xl text-base focus:border-blue-500/50 focus:ring-blue-500/20"
                                 />
                             </div>
 
                             {(errors.startDate || errors.startTime) && (
-                                <p className="text-sm text-red-400">
+                                <p className="text-sm text-red-400 mt-1 flex items-center gap-1">
+                                    <span className="w-1 h-1 rounded-full bg-red-400" />
                                     {(errors.startDate?.message as string) || (errors.startTime?.message as string)}
                                 </p>
                             )}
@@ -77,44 +82,46 @@ export default function DateTimeCard() {
                     </div>
 
                     {/* End Date & Time */}
-                    <div className="space-y-4">
-                        <Label className="text-blue-300 font-medium">Ends</Label>
-                        <div className="space-y-3">
+                    <div className="space-y-3">
+                        <Label className="text-gray-200 text-base font-medium">Ends</Label>
+                        <div className="space-y-4">
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <Button
                                         variant="outline"
                                         className={cn(
-                                            "w-full justify-start text-left font-normal bg-black/20 border-white/10 hover:bg-white/5",
+                                            "w-full justify-start text-left font-normal bg-black/40 border-white/10 hover:bg-white/5 h-12 rounded-xl text-base",
                                             !endDate && "text-muted-foreground"
                                         )}
                                     >
-                                        <CalendarIcon className="mr-2 h-4 w-4 text-blue-400" />
+                                        <CalendarIcon className="mr-3 h-4 w-4 text-blue-400" />
                                         {endDate ? format(endDate, "PPP") : <span>Pick a date</span>}
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0 bg-zinc-950 border-white/10">
+                                <PopoverContent className="w-auto p-0 bg-zinc-900 border-white/10 shadow-xl">
                                     <Calendar
                                         mode="single"
                                         selected={endDate}
                                         onSelect={(date) => setValue("endDate", date)}
                                         disabled={(date) => date < (startDate || new Date())}
                                         initialFocus
+                                        className="p-3"
                                     />
                                 </PopoverContent>
                             </Popover>
 
                             <div className="relative">
-                                <Clock className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+                                <Clock className="absolute left-4 top-4 h-4 w-4 text-blue-400" />
                                 <Input
                                     type="time"
                                     {...register("endTime")}
-                                    className="pl-9 bg-black/20 border-white/10"
+                                    className="pl-11 bg-black/40 border-white/10 h-12 rounded-xl text-base focus:border-blue-500/50 focus:ring-blue-500/20"
                                 />
                             </div>
 
                             {(errors.endDate || errors.endTime) && (
-                                <p className="text-sm text-red-400">
+                                <p className="text-sm text-red-400 mt-1 flex items-center gap-1">
+                                    <span className="w-1 h-1 rounded-full bg-red-400" />
                                     {(errors.endDate?.message as string) || (errors.endTime?.message as string)}
                                 </p>
                             )}

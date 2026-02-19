@@ -1,6 +1,7 @@
 import { api } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { Id } from "./_generated/dataModel";
 
 // Create a new event
 export const createEvent = mutation({
@@ -151,5 +152,18 @@ export const deleteEvent = mutation({
         }
 
         return { success: true };
+    },
+});
+
+export const getEventsByOrganizer = query({
+    args: { organizerId: v.string() },
+    handler: async (ctx, args) => {
+        const events = await ctx.db
+            .query("events")
+            .withIndex("by_organizer", (q) => q.eq("organizerId", args.organizerId as Id<"users">))
+            .order("desc")
+            .collect();
+
+        return events;
     },
 });

@@ -12,19 +12,22 @@ export default function TicketPriceCard() {
     const ticketType = watch("ticketType");
 
     return (
-        <Card className="bg-white/5 border-white/10 backdrop-blur-sm overflow-hidden group hover:border-white/20 transition-colors">
-            <CardHeader className="bg-linear-to-r from-amber-900/30 to-black/20 border-b border-white/10 pb-4">
-                <CardTitle className="flex items-center gap-3 text-lg font-bold text-amber-100">
-                    <div className="p-2 rounded-lg bg-amber-500/20 ring-1 ring-amber-500/30">
-                        <Ticket className="w-4 h-4 text-amber-400" />
+        <Card className="bg-zinc-900/50 border-white/10 backdrop-blur-xl overflow-hidden group hover:border-amber-500/20 transition-all duration-300 shadow-2xl">
+            <CardHeader className="border-b border-white/5 pb-6">
+                <CardTitle className="flex items-center gap-4 text-xl font-bold text-white">
+                    <div className="p-3 rounded-xl bg-amber-500/10 ring-1 ring-amber-500/20 group-hover:bg-amber-500/20 transition-colors">
+                        <Ticket className="w-5 h-5 text-amber-400" />
                     </div>
-                    Ticketing
+                    <div>
+                        <span className="block text-lg">Ticketing</span>
+                        <span className="block text-sm font-normal text-muted-foreground">Manage capacity and pricing</span>
+                    </div>
                 </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6 pt-6">
+            <CardContent className="space-y-8 pt-8 px-6 md:px-8">
 
                 <div className="space-y-3">
-                    <Label className="text-amber-300">Ticket Type</Label>
+                    <Label className="text-gray-200 text-base font-medium">Ticket Type</Label>
                     <Controller
                         control={control}
                         name="ticketType"
@@ -32,51 +35,57 @@ export default function TicketPriceCard() {
                             <RadioGroup
                                 onValueChange={field.onChange}
                                 defaultValue={field.value}
-                                className="flex gap-6"
+                                className="grid grid-cols-2 gap-6"
                             >
-                                <div className="flex items-center space-x-2 border border-white/10 rounded-lg p-3 bg-black/20 px-4 hover:bg-white/5 transition-colors cursor-pointer w-full">
+                                <div className={`flex items-center space-x-3 border rounded-xl p-4 transition-all cursor-pointer ${field.value === 'free' ? 'bg-amber-500/10 border-amber-500/50' : 'bg-black/40 border-white/10 hover:bg-white/5'}`}>
                                     <RadioGroupItem value="free" id="free" className="text-amber-500 border-amber-500/50" />
-                                    <Label htmlFor="free" className="cursor-pointer flex-1">Free Event</Label>
+                                    <Label htmlFor="free" className="cursor-pointer flex-1 font-medium text-base">Free Event</Label>
                                 </div>
-                                <div className="flex items-center space-x-2 border border-white/10 rounded-lg p-3 bg-black/20 px-4 hover:bg-white/5 transition-colors cursor-pointer w-full">
+                                <div className={`flex items-center space-x-3 border rounded-xl p-4 transition-all cursor-pointer ${field.value === 'paid' ? 'bg-amber-500/10 border-amber-500/50' : 'bg-black/40 border-white/10 hover:bg-white/5'}`}>
                                     <RadioGroupItem value="paid" id="paid" className="text-amber-500 border-amber-500/50" />
-                                    <Label htmlFor="paid" className="cursor-pointer flex-1">Paid Event</Label>
+                                    <Label htmlFor="paid" className="cursor-pointer flex-1 font-medium text-base">Paid Event</Label>
                                 </div>
                             </RadioGroup>
                         )}
                     />
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 gap-8">
                     {/* Capacity */}
-                    <div className="space-y-2">
-                        <Label className="flex items-center gap-2">
-                            <Users className="w-4 h-4" /> Capacity
+                    <div className="space-y-3">
+                        <Label className="flex items-center gap-2 text-gray-200 text-base font-medium">
+                            Capacity
                         </Label>
-                        <Input
-                            type="number"
-                            {...register("capacity", { valueAsNumber: true })}
-                            placeholder="Max attendees"
-                            className="bg-black/20 border-white/10"
-                        />
+                        <div className="relative group/input">
+                            <Users className="absolute left-4 top-4 h-4 w-4 text-amber-500 group-focus-within/input:text-amber-400 transition-colors" />
+                            <Input
+                                type="number"
+                                {...register("capacity", { valueAsNumber: true })}
+                                placeholder="Max attendees"
+                                className="pl-11 bg-black/40 border-white/10 h-12 rounded-xl text-base focus:border-amber-500/50 focus:ring-amber-500/20"
+                            />
+                        </div>
                         {errors.capacity && (
-                            <p className="text-sm text-red-400">{errors.capacity.message as string}</p>
+                            <p className="text-sm text-red-400 mt-1 flex items-center gap-1">
+                                <span className="w-1 h-1 rounded-full bg-red-400" />
+                                {errors.capacity.message as string}
+                            </p>
                         )}
                     </div>
 
                     {/* Price (if paid) */}
                     {ticketType === "paid" && (
-                        <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
-                            <Label className="flex items-center gap-2 text-amber-400">
-                                <IndianRupee className="w-4 h-4" /> Price per Ticket
+                        <div className="space-y-3 animate-in fade-in slide-in-from-top-2">
+                            <Label className="flex items-center gap-2 text-amber-400 text-base font-medium">
+                                Price per Ticket
                             </Label>
-                            <div className="relative">
-                                <span className="absolute left-3 top-2.5 text-gray-400">₹</span>
+                            <div className="relative group/input">
+                                <IndianRupee className="absolute left-4 top-4 h-4 w-4 text-amber-500 group-focus-within/input:text-amber-400 transition-colors" />
                                 <Input
                                     type="number"
                                     {...register("ticketPrice", { valueAsNumber: true })}
                                     placeholder="0.00"
-                                    className="pl-8 bg-black/20 border-amber-500/30 focus:border-amber-500"
+                                    className="pl-11 bg-black/40 border-amber-500/30 focus:border-amber-500 h-12 rounded-xl text-base"
                                 />
                             </div>
                         </div>
