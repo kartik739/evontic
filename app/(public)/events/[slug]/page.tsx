@@ -397,9 +397,9 @@ END:VCALENDAR`;
                                     ) : isOrganizer ? (
                                         <Button
                                             className="w-full h-12 bg-white/10 hover:bg-white/20 text-white"
-                                            onClick={() => router.push(`/events/${event.slug}/manage`)}
+                                            onClick={() => router.push(`/edit-event/${event._id}`)}
                                         >
-                                            Manage Event
+                                            Edit Event
                                         </Button>
                                     ) : (
                                         <Button

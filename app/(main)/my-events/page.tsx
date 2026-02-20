@@ -41,9 +41,9 @@ export default function MyEventsPage() {
         router.push(`/edit-event/${eventId}`);
     };
 
-    // Navigate to event dashboard instead of event detail
+    // Navigate to event details
     const handleEventClick = (eventId: string) => {
-        router.push(`/events/${events?.find((e: Doc<"events">) => e._id === eventId)?.slug}/manage`);
+        router.push(`/events/${events?.find((e: Doc<"events">) => e._id === eventId)?.slug}`);
     };
 
     if (isLoading) {

@@ -203,7 +203,7 @@ export default function EditEventPage() {
             });
 
             toast.success("Event updated successfully! ✏️");
-            router.push(`/events/${event?.slug}/manage`);
+            router.push(`/events/${event?.slug}`);
         } catch (error: any) {
             toast.error(error.message || "Failed to update event");
         }
