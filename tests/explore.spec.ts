@@ -10,7 +10,7 @@ test('explore page loads and shows search/filters', async ({ page }) => {
     await expect(page.locator('.animate-spin')).not.toBeVisible({ timeout: 10000 });
 
     // Check for search input
-    await expect(page.getByPlaceholder('Search events...')).toBeVisible();
+    await expect(page.getByPlaceholder('Search events...').first()).toBeVisible();
 
     // Check for category filters
     await expect(page.getByText('Music')).toBeVisible();
@@ -18,7 +18,7 @@ test('explore page loads and shows search/filters', async ({ page }) => {
 
     // Check that events lists are present (Local, Popular, etc.)
     // Check that events lists are present OR empty state
-    const hasEvents = await page.getByText('Events Near You').isVisible();
-    const hasNoEvents = await page.getByText('No events yet').isVisible();
-    expect(hasEvents || hasNoEvents).toBeTruthy();
+    const hasEvents = await page.getByText('Happening Near You').isVisible();
+    const hasTrending = await page.getByText('Trending Now').isVisible();
+    expect(hasEvents || hasTrending).toBeTruthy();
 });
