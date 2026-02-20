@@ -337,11 +337,11 @@ export default function EditEventPage() {
                         <LocationCard />
                         <TicketPriceCard />
 
-                        <div className="flex gap-4">
+                        <div className="flex flex-col sm:flex-row gap-4">
                             <Button
                                 type="button"
                                 variant="outline"
-                                className="w-full py-8 text-xl rounded-xl border-white/20 bg-black/20 text-white hover:bg-black/40"
+                                className="flex-1 py-8 text-xl rounded-xl border-white/20 bg-black/20 text-white hover:bg-black/40"
                                 onClick={() => router.back()}
                             >
                                 Cancel
@@ -350,7 +350,7 @@ export default function EditEventPage() {
                                 type="submit"
                                 disabled={isUpdating}
                                 size="lg"
-                                className="w-full py-8 text-xl rounded-xl shadow-2xl bg-white text-black hover:bg-gray-100 hover:scale-[1.01] transition-all font-bold"
+                                className="flex-1 py-8 text-xl rounded-xl shadow-2xl bg-white text-black hover:bg-gray-100 hover:scale-[1.01] transition-all font-bold"
                             >
                                 {isUpdating ? (
                                     <>
