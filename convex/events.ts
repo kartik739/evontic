@@ -79,6 +79,66 @@ export const createEvent = mutation({
     },
 });
 
+// Update an existing event
+export const updateEvent = mutation({
+    args: {
+        eventId: v.id("events"),
+        title: v.string(),
+        description: v.string(),
+        category: v.string(),
+        tags: v.array(v.string()),
+        startDate: v.number(),
+        endDate: v.number(),
+        timezone: v.string(),
+        locationType: v.union(v.literal("physical"), v.literal("online")),
+        venue: v.optional(v.string()),
+        address: v.optional(v.string()),
+        city: v.string(),
+        state: v.optional(v.string()),
+        country: v.string(),
+        capacity: v.number(),
+        ticketType: v.union(v.literal("free"), v.literal("paid")),
+        ticketPrice: v.optional(v.number()),
+        coverImage: v.optional(v.string()),
+        themeColor: v.optional(v.string()),
+        hasPro: v.optional(v.boolean()),
+    },
+    handler: async (ctx, args) => {
+        try {
+            const user: any = await ctx.runQuery(api.users.getCurrentUser);
+            if (!user) throw new Error("Unauthenticated");
+
+            const event = await ctx.db.get(args.eventId);
+            if (!event) throw new Error("Event not found");
+
+            if (event.organizerId !== user._id) {
+                throw new Error("You are not authorized to edit this event");
+            }
+
+            // SERVER-SIDE CHECK: Verify custom color usage
+            const defaultColor = "#1e3a8a";
+            if (!args.hasPro && args.themeColor && args.themeColor !== defaultColor) {
+                throw new Error(
+                    "Custom theme colors are a Pro feature. Please upgrade to Pro."
+                );
+            }
+
+            const themeColor = args.hasPro ? args.themeColor : defaultColor;
+
+            const { hasPro, eventId, ...eventData } = args;
+            await ctx.db.patch(eventId, {
+                ...eventData,
+                themeColor,
+                updatedAt: Date.now(),
+            });
+
+            return eventId;
+        } catch (error: any) {
+            throw new Error(`Failed to update event: ${error.message}`);
+        }
+    },
+});
+
 // Get event by slug
 export const getEventBySlug = query({
     args: { slug: v.string() },
@@ -165,5 +225,13 @@ export const getEventsByOrganizer = query({
             .collect();
 
         return events;
+    },
+});
+
+export const getEventById = query({
+    args: { eventId: v.id("events") },
+    handler: async (ctx, args) => {
+        const event = await ctx.db.get(args.eventId);
+        return event;
     },
 });

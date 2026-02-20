@@ -106,9 +106,7 @@ END:VCALENDAR`;
         toast.success(isSaved ? "Removed from favorites" : "Saved to favorites!");
     };
 
-    const handleViewProfile = () => {
-        toast.info("Organizer profiles are coming soon!");
-    };
+
 
     const handleRegister = () => {
         if (!user) {

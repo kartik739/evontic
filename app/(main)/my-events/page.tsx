@@ -38,10 +38,7 @@ export default function MyEventsPage() {
     };
 
     const handleEdit = (eventId: string) => {
-        toast.info("Edit functionality is coming soon!", {
-            description: "We are building a comprehensive edit wizard."
-        });
-        // router.push(`/edit-event/${eventId}`);
+        router.push(`/edit-event/${eventId}`);
     };
 
     // Navigate to event dashboard instead of event detail
