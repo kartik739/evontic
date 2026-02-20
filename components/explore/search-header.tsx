@@ -120,18 +120,18 @@ export default function SearchHeader() {
     }, []);
 
     return (
-        <div className="w-full max-w-4xl mx-auto mb-12 relative z-30">
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-2 rounded-2xl shadow-2xl flex flex-col md:flex-row gap-2">
+        <div className="w-full mx-auto mb-12 relative z-30">
+            <div className="bg-[#0f0f0f]/90 backdrop-blur-2xl border border-white/10 hover:border-purple-500/40 transition-all duration-300 p-2 rounded-3xl shadow-2xl flex flex-col md:flex-row items-center gap-2">
                 {/* Search Bar */}
-                <div className="relative flex-1" ref={searchRef}>
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <div className="relative flex-1 w-full" ref={searchRef}>
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-purple-400 transition-colors" />
                     <Input
                         placeholder="Search for events, artists, or venues..."
                         onChange={handleSearchInput}
                         onFocus={() => {
                             if (searchQuery.length >= 2) setShowSearchResults(true);
                         }}
-                        className="pl-12 w-full h-12 bg-transparent border-none focus-visible:ring-0 text-lg placeholder:text-gray-500"
+                        className="pl-12 w-full h-14 bg-transparent border-none focus-visible:ring-0 text-lg placeholder:text-gray-500 text-white rounded-l-2xl"
                     />
 
                     {/* Search Results Dropdown */}
@@ -204,9 +204,9 @@ export default function SearchHeader() {
                 </div>
 
                 {/* divider */}
-                <div className="hidden md:block w-px bg-white/10 my-2" />
+                <div className="hidden md:block w-px h-10 bg-white/10 mx-2" />
 
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2 w-full md:w-auto px-1 md:p-0">
                     {/* State Select */}
                     <Select
                         value={selectedState}
@@ -215,15 +215,15 @@ export default function SearchHeader() {
                             setSelectedCity("");
                         }}
                     >
-                        <SelectTrigger className="w-full md:w-40 h-12 bg-transparent border-none focus:ring-0 text-gray-300">
+                        <SelectTrigger className="w-full md:w-44 h-14 bg-white/5 hover:bg-white/10 transition-colors border-none focus:ring-0 text-gray-300 rounded-xl">
                             <div className="flex items-center gap-2">
                                 <MapPin className="w-4 h-4 text-purple-400" />
                                 <SelectValue placeholder="State" />
                             </div>
                         </SelectTrigger>
-                        <SelectContent className="bg-[#0a0a0a] border-white/10 text-white">
+                        <SelectContent className="bg-[#121212] border-white/10 text-white rounded-xl shadow-xl">
                             {indianStates.map((state) => (
-                                <SelectItem key={state.isoCode} value={state.name}>
+                                <SelectItem key={state.isoCode} value={state.name} className="focus:bg-white/10 focus:text-purple-400">
                                     {state.name}
                                 </SelectItem>
                             ))}
@@ -241,15 +241,15 @@ export default function SearchHeader() {
                         }}
                         disabled={!selectedState}
                     >
-                        <SelectTrigger className="w-full md:w-40 h-12 bg-transparent border-none focus:ring-0 text-gray-300">
+                        <SelectTrigger className="w-full md:w-44 h-14 bg-white/5 hover:bg-white/10 transition-colors border-none focus:ring-0 text-gray-300 rounded-xl">
                             <div className="flex items-center gap-2">
-                                <div className="w-1 h-1 rounded-full bg-purple-400" />
+                                <MapPin className="w-4 h-4 text-pink-400" />
                                 <SelectValue placeholder="City" />
                             </div>
                         </SelectTrigger>
-                        <SelectContent className="bg-[#0a0a0a] border-white/10 text-white">
+                        <SelectContent className="bg-[#121212] border-white/10 text-white rounded-xl shadow-xl">
                             {cities.map((city) => (
-                                <SelectItem key={city.name} value={city.name}>
+                                <SelectItem key={city.name} value={city.name} className="focus:bg-white/10 focus:text-pink-400">
                                     {city.name}
                                 </SelectItem>
                             ))}
@@ -259,7 +259,7 @@ export default function SearchHeader() {
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-12 w-12 hover:bg-white/10 text-gray-400 hover:text-white rounded-xl"
+                        className="h-14 w-14 bg-purple-600/20 hover:bg-purple-600/40 text-purple-400 hover:text-white rounded-xl transition-all border border-purple-500/30 shrink-0"
                     >
                         <Filter className="w-5 h-5" />
                     </Button>

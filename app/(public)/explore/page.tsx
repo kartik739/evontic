@@ -84,7 +84,7 @@ export default function ExplorePage() {
                 <div className="absolute top-[20%] right-[-10%] w-[30%] h-[50%] bg-blue-900/10 rounded-full blur-[100px]" />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto space-y-20">
+            <div className="relative z-10 max-w-[1600px] mx-auto space-y-20">
                 {/* Header Section */}
                 <div className="text-center space-y-4">
                     <motion.div
