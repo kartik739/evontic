@@ -87,7 +87,7 @@ Follow these steps to set up the project locally.
 
 ## 📦 Deployment
 
-This project is optimized for deployment on **Vercel**.
+This project is optimized for deployment on **Vercel** and includes robust CI/CD features.
 
 1.  Push your code to a GitHub repository.
 2.  Import the project into Vercel.
@@ -97,6 +97,13 @@ This project is optimized for deployment on **Vercel**.
     npm run build:convex
     ```
     This ensures the correct Convex deployment command runs in production.
+
+### Cloud-Native DevOps & CI/CD
+*   **GitHub Actions:** The project enforces rigorous code quality tests. Every Pull Request triggers a GitHub action (`ci.yml`) that runs strict Linting and TypeScript checks before allowing merges.
+*   **Vercel Preview Environments:** Out of the box, Vercel dynamically provisions preview URLs for every Pull Request.
+    > [!IMPORTANT]
+    > **Convex Preview Branches**: When reviewing features via Vercel Preview URLs, remember that Vercel needs a database environment to point to. By default, Convex matches Vercel deployments automatically so your Vercel preview app talks to isolated, temporary Convex environments. You can manage these inside the Convex Dashboard.
+*   **Sentry Error Tracking:** The app is instrumented with `@sentry/nextjs`. Once your `NEXT_PUBLIC_SENTRY_DSN` is set in Vercel production, all unhandled frontend UI errors and API exceptions will be caught automatically.
 
 ## 🤝 Contributing
 
