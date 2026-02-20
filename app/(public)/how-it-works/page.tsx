@@ -56,7 +56,7 @@ export default function HowItWorksPage() {
                         How Evontic Works
                     </h1>
                     <p className="text-xl text-gray-400">
-                        Whether you're looking for something to do or planning the next big thing, we've got you covered.
+                        Whether you&apos;re looking for something to do or planning the next big thing, we&apos;ve got you covered.
                     </p>
                 </div>
 

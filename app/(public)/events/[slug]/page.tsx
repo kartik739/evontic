@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/purity */
 "use client";
 
 import { useParams, useRouter } from "next/navigation";

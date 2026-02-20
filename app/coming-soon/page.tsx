@@ -23,7 +23,7 @@ export default function ComingSoonPage() {
                 </h1>
 
                 <p className="text-xl text-gray-400 leading-relaxed">
-                    We're working hard to bring you this feature. <br />
+                    We&apos;re working hard to bring you this feature. <br />
                     Stay tuned for something amazing!
                 </p>
 

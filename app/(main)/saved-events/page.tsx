@@ -37,7 +37,7 @@ export default function SavedEventsPage() {
             <div className="relative z-10 max-w-7xl mx-auto px-6">
                 <div className="mb-12">
                     <h1 className="text-4xl font-bold mb-4">Saved Events</h1>
-                    <p className="text-gray-400">Events you're interested in.</p>
+                    <p className="text-gray-400">Events you&apos;re interested in.</p>
                 </div>
 
                 {!typedSavedEvents || typedSavedEvents.length === 0 ? (

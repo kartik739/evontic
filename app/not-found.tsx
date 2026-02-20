@@ -16,7 +16,7 @@ export default function NotFound() {
                 Lost in Space?
             </h2>
             <p className="text-gray-400 max-w-md mb-8 z-10 text-lg">
-                The page you are looking for doesn't exist or has been moved to another galaxy.
+                The page you are looking for doesn&apos;t exist or has been moved to another galaxy.
             </p>
 
             <div className="flex gap-4 z-10">

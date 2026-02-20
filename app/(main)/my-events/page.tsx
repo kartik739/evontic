@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/purity */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -116,7 +116,7 @@ export default function MyEventsPage() {
                         {upcomingEvents.length === 0 ? (
                             <div className="p-12 text-center bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
                                 <h2 className="text-xl font-bold text-white mb-2">No upcoming events</h2>
-                                <p className="text-gray-400 mb-6">You don't have any upcoming events scheduled.</p>
+                                <p className="text-gray-400 mb-6">You don&apos;t have any upcoming events scheduled.</p>
                                 <Button asChild variant="outline" className="border-white/10 hover:bg-white/5 text-white">
                                     <Link href="/create-event">Create Event</Link>
                                 </Button>

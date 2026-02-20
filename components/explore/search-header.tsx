@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useState, useEffect, useRef, useMemo, ChangeEvent } from "react";
@@ -54,10 +54,8 @@ export default function SearchHeader() {
         }
     }, [currentUser, isLoading]);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function debounce(func: (...args: any[]) => void, wait: number) {
         let timeout: NodeJS.Timeout;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return function executedFunction(...args: any[]) {
             const later = () => {
                 clearTimeout(timeout);
@@ -195,7 +193,7 @@ export default function SearchHeader() {
                                     </div>
                                 ) : (
                                     <div className="p-8 text-center text-gray-500">
-                                        No events found matching "{searchQuery}"
+                                        No events found matching &quot;{searchQuery}&quot;
                                     </div>
                                 )}
                             </motion.div>

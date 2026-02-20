@@ -52,7 +52,7 @@ export default function TrendingEvents() {
                             transition={{ delay: 0.2 }}
                             className="text-gray-400 max-w-xl text-lg"
                         >
-                            Discover the most sought-after experiences everyone is talking about. Don't miss out on these exclusive gatherings.
+                            Discover the most sought-after experiences everyone is talking about. Don&apos;t miss out on these exclusive gatherings.
                         </motion.p>
                     </div>
 
@@ -104,7 +104,7 @@ export default function TrendingEvents() {
                     <div className="text-center py-24 bg-white/5 rounded-3xl border border-white/10">
                         <Flame className="w-12 h-12 text-gray-600 mx-auto mb-4" />
                         <h3 className="text-xl font-medium text-white mb-2">Check back soon</h3>
-                        <p className="text-gray-400">We're gathering the hottest events for you.</p>
+                        <p className="text-gray-400">We&apos;re gathering the hottest events for you.</p>
                     </div>
                 )}
             </div>
