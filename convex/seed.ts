@@ -759,3 +759,86 @@ export const clear = internalMutation({
         return { success: true, deleted: count };
     },
 });
+
+// Seed dynamically to ensure at least 2 events per category
+export const fillMissingEvents = internalMutation({
+    handler: async (ctx) => {
+        let organizer = await ctx.db.query("users").first();
+
+        // Get categories definition dynamically from data file or hardcoded list if unavailable
+        const categories = ["tech", "music", "sports", "art", "food", "business", "health", "education", "gaming", "networking", "outdoor", "community"];
+
+        if (!organizer) {
+            const organizerId = await ctx.db.insert("users", {
+                email: "demo-organizer@eventhub.com",
+                tokenIdentifier: "demo-user-token",
+                name: "EventHub Auto-Seeder",
+                hasCompletedOnboarding: true,
+                location: { city: "Bangalore", state: "Karnataka", country: "India" },
+                interests: ["tech", "music", "business"],
+                freeEventsCreated: 0,
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
+            });
+            organizer = await ctx.db.get(organizerId);
+        }
+
+        if (!organizer) throw new Error("Failed to secure organizer account");
+
+        let totalCreated = 0;
+        const createdEvents: string[] = [];
+
+        for (const cat of categories) {
+            // Check existing
+            const existing = await ctx.db
+                .query("events")
+                .withIndex("by_category", (q) => q.eq("category", cat))
+                .collect();
+
+            const count = existing.length;
+
+            if (count < 2) {
+                const needed = 2 - count;
+                for (let i = 0; i < needed; i++) {
+                    const id = count + i;
+                    const title = `Exciting ${cat.toUpperCase()} Event ${id + 1}`;
+                    const startDate = getRandomFutureDate(7, 30); // 1 to 4 weeks out
+
+                    const eventData = {
+                        title: title,
+                        description: `Join us for an amazing ${cat} event! This is automatically generated to populate the platform. Don't miss out on this fantastic opportunity to connect and learn.`,
+                        category: cat,
+                        tags: [cat, "demo"],
+                        city: "New Delhi",
+                        state: "Delhi",
+                        country: "India",
+                        venue: "https://maps.google.com/?q=Connaught+Place+Delhi",
+                        address: "Connaught Place, New Delhi",
+                        capacity: 100 + Math.floor(Math.random() * 50),
+                        ticketType: i % 2 === 0 ? ("free" as const) : ("paid" as const),
+                        ticketPrice: i % 2 === 0 ? undefined : 499,
+                        coverImage: `https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80`, // Generic event placeholder
+                        themeColor: "#1e3a8a",
+                        slug: generateSlug(title),
+                        organizerId: organizer._id,
+                        organizerName: organizer.name,
+                        startDate,
+                        endDate: getEventEndTime(startDate),
+                        timezone: "Asia/Kolkata",
+                        locationType: "physical" as const,
+                        registrationCount: Math.floor(Math.random() * 20),
+                        createdAt: Date.now(),
+                        updatedAt: Date.now(),
+                    };
+
+                    await ctx.db.insert("events", eventData);
+                    createdEvents.push(title);
+                    totalCreated++;
+                }
+            }
+        }
+
+        console.log(`✅ Dynamically seeded ${totalCreated} missing events!`);
+        return { success: true, count: totalCreated, events: createdEvents };
+    }
+});
