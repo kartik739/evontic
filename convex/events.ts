@@ -29,6 +29,7 @@ export const createEvent = mutation({
     handler: async (ctx, args) => {
         try {
             const user: any = await ctx.runQuery(api.users.getCurrentUser);
+            if (!user) throw new Error("Unauthenticated");
 
             // SERVER-SIDE CHECK: Verify event limit for Free users
             if (!args.hasPro && user.freeEventsCreated >= 1) {
