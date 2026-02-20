@@ -31,7 +31,7 @@ jobs:
 
     - name: Build Next.js App
       env:
-        NEXT_PUBLIC_CONVEX_URL: ${{ secrets.NEXT_PUBLIC_CONVEX_URL }}
-        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}}
-        CLERK_SECRET_KEY: ${{secrets.CLERK_SECRET_KEY}}
+        NEXT_PUBLIC_CONVEX_URL: ${{ secrets.NEXT_PUBLIC_CONVEX_URL || 'https://fake-url.convex.cloud' }}
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_ZGlzY3JldGUtYXBoaWQtOTQuY2xlcmsuYWNjb3VudHMuZGV2JA' }}
+        CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY || 'sk_test_dummy' }}
       run: npm run build
