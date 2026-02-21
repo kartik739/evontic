@@ -10,6 +10,7 @@ import { useConvexQuery, useConvexMutation } from "@/hooks/use-convex-query";
 import { api } from "@/convex/_generated/api";
 import { createLocationSlug } from "@/lib/location-utils";
 import { getCategoryIcon } from "@/lib/data";
+import { CategoryIcon } from "@/components/category-icon";
 
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -119,7 +120,7 @@ export default function SearchHeader() {
 
     return (
         <div className="w-full mx-auto mb-12 relative z-30">
-            <div className="bg-[#0f0f0f]/90 backdrop-blur-2xl border border-white/10 hover:border-purple-500/40 transition-all duration-300 p-2 rounded-3xl shadow-2xl flex flex-col md:flex-row items-center gap-2">
+            <div className="bg-[#0f0f0f]/90 backdrop-blur-2xl border border-white/10 hover:border-purple-500/40 transition-all duration-300 p-2 rounded-3xl shadow-2xl flex flex-col md:flex-row items-stretch md:items-center gap-2">
                 {/* Search Bar */}
                 <div className="relative flex-1 w-full" ref={searchRef}>
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-purple-400 transition-colors" />
@@ -159,7 +160,7 @@ export default function SearchHeader() {
                                                     className="w-full px-4 py-3 hover:bg-white/5 text-left transition-colors flex items-start gap-4 group"
                                                 >
                                                     <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-xl shrink-0 group-hover:bg-purple-500/20 group-hover:text-purple-400 transition-colors">
-                                                        {getCategoryIcon(event.category)}
+                                                        <CategoryIcon name={getCategoryIcon(event.category)} className="w-5 h-5" />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <p className="font-medium text-white mb-1 line-clamp-1 group-hover:text-purple-400 transition-colors">
@@ -204,7 +205,7 @@ export default function SearchHeader() {
                 {/* divider */}
                 <div className="hidden md:block w-px h-10 bg-white/10 mx-2" />
 
-                <div className="flex items-center gap-2 w-full md:w-auto px-1 md:p-0">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto px-1 md:p-0">
                     {/* State Select */}
                     <Select
                         value={selectedState}
@@ -257,7 +258,7 @@ export default function SearchHeader() {
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-14 w-14 bg-purple-600/20 hover:bg-purple-600/40 text-purple-400 hover:text-white rounded-xl transition-all border border-purple-500/30 shrink-0"
+                        className="h-14 w-full sm:w-14 bg-purple-600/20 hover:bg-purple-600/40 text-purple-400 hover:text-white rounded-xl transition-all border border-purple-500/30 shrink-0 flex items-center justify-center"
                     >
                         <Filter className="w-5 h-5" />
                     </Button>

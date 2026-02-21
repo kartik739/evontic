@@ -144,13 +144,13 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                                     <button
                                         key={category.id}
                                         onClick={() => toggleInterest(category.id)}
-                                        className={`p-4 rounded-lg border-2 transition-all hover:scale-105 ${selectedInterests.includes(category.id)
-                                                ? "border-purple-500 bg-purple-500/10 shadow-lg shadow-purple-500/20"
-                                                : "border-border hover:border-purple-300"
+                                        className={`p-3 sm:p-4 flex flex-col items-center text-center rounded-lg border-2 transition-all hover:scale-105 ${selectedInterests.includes(category.id)
+                                            ? "border-purple-500 bg-purple-500/10 shadow-lg shadow-purple-500/20"
+                                            : "border-border hover:border-purple-300"
                                             }`}
                                     >
-                                        <div className="text-2xl mb-2">{category.icon}</div>
-                                        <div className="text-sm font-medium">{category.label}</div>
+                                        <div className="text-xl sm:text-2xl mb-1 sm:mb-2">{category.icon}</div>
+                                        <div className="text-xs sm:text-sm font-medium leading-tight">{category.label}</div>
                                     </button>
                                 ))}
                             </div>

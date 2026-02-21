@@ -56,9 +56,9 @@ export default function EventCard({
                 )}
                 onClick={onClick}
             >
-                <CardContent className="p-3 flex gap-4">
+                <CardContent className="p-3 flex gap-3 sm:gap-4">
                     {/* Event Image */}
-                    <div className="w-24 h-24 rounded-lg shrink-0 overflow-hidden relative">
+                    <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-lg shrink-0 overflow-hidden relative">
                         {event.coverImage ? (
                             <Image
                                 src={event.coverImage}
@@ -178,7 +178,7 @@ export default function EventCard({
                 </div>
 
                 {action && (
-                    <div className="flex gap-2 pt-2">
+                    <div className="flex flex-wrap gap-2 pt-2">
                         {/* Primary button */}
                         <Button
                             variant="default"

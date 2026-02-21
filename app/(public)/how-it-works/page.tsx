@@ -73,10 +73,12 @@ export default function HowItWorksPage() {
                                 viewport={{ once: true }}
                                 className="relative p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm"
                             >
-                                <div className="absolute -top-6 left-6 p-4 rounded-xl bg-black border border-white/10 shadow-xl">
-                                    {step.icon}
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="p-3 rounded-xl bg-white/5 border border-white/10 shadow-xl shrink-0">
+                                        {step.icon}
+                                    </div>
+                                    <h3 className="text-xl font-bold">{step.title}</h3>
                                 </div>
-                                <h3 className="text-xl font-bold mt-8 mb-3">{step.title}</h3>
                                 <p className="text-gray-400 leading-relaxed">
                                     {step.description}
                                 </p>

@@ -58,7 +58,7 @@ export default function MyEventsPage() {
     const pastEvents = events?.filter((e: Doc<"events">) => e.endDate < Date.now()) || [];
 
     return (
-        <div className="min-h-screen bg-black text-white p-6 md:p-8 pt-24 md:pt-32 pb-24 relative overflow-hidden">
+        <div className="min-h-screen bg-black text-white px-4 md:px-8 py-8 pt-36 md:pt-32 pb-24 relative overflow-hidden">
 
             {/* Background Ambience */}
             <div className="absolute inset-0 z-0 pointer-events-none">
@@ -103,11 +103,11 @@ export default function MyEventsPage() {
                 </div>
 
                 <Tabs defaultValue="upcoming" className="w-full">
-                    <TabsList className="bg-white/5 border border-white/10 text-gray-400">
-                        <TabsTrigger value="upcoming" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+                    <TabsList className="bg-white/5 border border-white/10 text-gray-400 flex flex-wrap h-auto max-w-full justify-start p-1">
+                        <TabsTrigger value="upcoming" className="flex-1 min-w-[120px] data-[state=active]:bg-purple-500 data-[state=active]:text-white">
                             Upcoming ({upcomingEvents.length})
                         </TabsTrigger>
-                        <TabsTrigger value="past" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
+                        <TabsTrigger value="past" className="flex-1 min-w-[120px] data-[state=active]:bg-purple-500 data-[state=active]:text-white">
                             Past ({pastEvents.length})
                         </TabsTrigger>
                     </TabsList>

@@ -188,7 +188,7 @@ END:VCALENDAR`;
                             </Badge>
                         </div>
 
-                        <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-linear-to-r from-white to-white/70 leading-tight mb-4 max-w-4xl">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-linear-to-r from-white to-white/70 leading-tight mb-4 max-w-4xl">
                             {event.title}
                         </h1>
 
@@ -412,25 +412,27 @@ END:VCALENDAR`;
                                     )}
                                 </div>
 
-                                <Button
-                                    variant="outline"
-                                    className="w-full gap-2 border-white/10 hover:bg-white/5 hover:text-white"
-                                    onClick={handleShare}
-                                >
-                                    <Share2 className="w-4 h-4" />
-                                    Share
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    className={cn(
-                                        "w-full gap-2 border-white/10 hover:bg-white/5 hover:text-white",
-                                        isSaved && "text-red-500 border-red-500/20 bg-red-500/10 hover:bg-red-500/20 hover:text-red-400"
-                                    )}
-                                    onClick={handleSave}
-                                >
-                                    <Heart className={cn("w-4 h-4", isSaved && "fill-current")} />
-                                    {isSaved ? "Saved" : "Save"}
-                                </Button>
+                                <div className="grid grid-cols-2 gap-3 pt-2">
+                                    <Button
+                                        variant="outline"
+                                        className="w-full gap-2 border-white/10 hover:bg-white/5 hover:text-white"
+                                        onClick={handleShare}
+                                    >
+                                        <Share2 className="w-4 h-4" />
+                                        Share
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        className={cn(
+                                            "w-full gap-2 border-white/10 hover:bg-white/5 hover:text-white",
+                                            isSaved && "text-red-500 border-red-500/20 bg-red-500/10 hover:bg-red-500/20 hover:text-red-400"
+                                        )}
+                                        onClick={handleSave}
+                                    >
+                                        <Heart className={cn("w-4 h-4", isSaved && "fill-current")} />
+                                        {isSaved ? "Saved" : "Save"}
+                                    </Button>
+                                </div>
 
                             </CardContent>
                         </Card>

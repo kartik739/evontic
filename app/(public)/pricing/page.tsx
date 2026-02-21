@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function PricingPage() {
     return (
-        <div className="min-h-screen bg-black text-white pt-24 pb-24 relative overflow-hidden">
+        <div className="min-h-screen bg-black text-white pt-44 md:pt-32 pb-24 relative overflow-hidden">
             {/* Background Ambience */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div className="absolute top-[20%] left-[20%] w-[60%] h-[60%] bg-purple-900/10 rounded-full blur-[150px]" />
@@ -30,8 +30,10 @@ export default function PricingPage() {
                         animate={{ opacity: 1, x: 0 }}
                         className="p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col"
                     >
-                        <h3 className="text-2xl font-bold text-gray-200 mb-2">Starter</h3>
-                        <div className="text-5xl font-bold mb-6">Free</div>
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="text-3xl font-bold text-gray-200">Starter</h3>
+                            <div className="text-4xl font-bold">Free</div>
+                        </div>
                         <p className="text-gray-400 mb-8">Perfect for trying out the platform and hosting small events.</p>
 
                         <div className="space-y-4 mb-8 flex-1">
@@ -71,10 +73,12 @@ export default function PricingPage() {
                         <div className="absolute top-0 right-0 bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">
                             POPULAR
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-2">Pro</h3>
-                        <div className="flex items-baseline gap-1 mb-6">
-                            <span className="text-5xl font-bold">$29</span>
-                            <span className="text-gray-400">/month</span>
+                        <div className="flex justify-between items-center mb-6 mt-4">
+                            <h3 className="text-3xl font-bold text-white">Pro</h3>
+                            <div className="flex items-baseline gap-1">
+                                <span className="text-4xl font-bold">$29</span>
+                                <span className="text-gray-400">/month</span>
+                            </div>
                         </div>
                         <p className="text-purple-200 mb-8">For serious organizers who need professional tools.</p>
 

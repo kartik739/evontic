@@ -35,7 +35,7 @@ export default function Hero() {
                         </span>
                     </motion.div>
 
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-tight">
+                    <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 tracking-tight leading-tight">
                         Create events that <br />
                         <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient-x">
                             inspire.
@@ -52,12 +52,12 @@ export default function Hero() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                        className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mt-2 px-2 sm:px-0 w-full sm:w-auto"
                     >
                         <Button
                             asChild
                             size="lg"
-                            className="bg-white text-black hover:bg-gray-200 rounded-full px-8 h-12 text-base"
+                            className="bg-white text-black hover:bg-gray-200 rounded-full w-full sm:w-auto px-8 h-12 text-base"
                         >
                             <Link href="/create-event">
                                 Get Started
@@ -68,7 +68,7 @@ export default function Hero() {
                             asChild
                             size="lg"
                             variant="outline"
-                            className="border-white/20 hover:bg-white/5 rounded-full px-8 h-12 text-base"
+                            className="border-white/20 hover:bg-white/5 rounded-full w-full sm:w-auto px-8 h-12 text-base"
                         >
                             <Link href="/explore">
                                 View Demo

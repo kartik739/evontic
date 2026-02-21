@@ -9,6 +9,7 @@ import { CATEGORIES } from "@/lib/data";
 import { parseLocationSlug } from "@/lib/location-utils";
 import { Badge } from "@/components/ui/badge";
 import EventCard from "@/components/event-card";
+import { CategoryIcon } from "@/components/category-icon";
 import { Doc } from "@/convex/_generated/dataModel";
 
 export default function DynamicExplorePage() {
@@ -62,7 +63,9 @@ export default function DynamicExplorePage() {
             <>
                 <div className="pb-5">
                     <div className="flex items-center gap-4 mb-4">
-                        <div className="text-6xl">{categoryInfo.icon}</div>
+                        <div className="text-5xl md:text-6xl text-purple-400">
+                            <CategoryIcon name={categoryInfo.icon} className="w-12 h-12 md:w-16 md:h-16" />
+                        </div>
                         <div>
                             <h1 className="text-5xl md:text-6xl font-bold">
                                 {categoryInfo.label}

@@ -190,12 +190,12 @@ export default function CreateEventPage() {
 
     return (
         <div
-            className="min-h-screen transition-colors duration-500 px-6 py-8 pt-24 lg:rounded-md"
+            className="min-h-screen transition-colors duration-500 px-4 md:px-6 py-8 pt-36 md:pt-28 lg:pt-24 lg:rounded-md flex flex-col items-center"
             style={{ backgroundColor: themeColor }}
         >
             <FormProvider {...methods}>
                 {/* Header */}
-                <div className="max-w-6xl mx-auto flex flex-col gap-5 md:flex-row justify-between mb-10 animate-in fade-in slide-in-from-top-4">
+                <div className="w-full max-w-6xl flex flex-col gap-5 md:flex-row justify-between mb-8 md:mb-10 animate-in fade-in slide-in-from-top-4">
                     <div>
                         <h1 className="text-4xl font-bold bg-black/20 px-4 py-2 rounded-xl inline-block backdrop-blur-sm border border-white/10">Create Event</h1>
                         {!hasPro && (
@@ -211,9 +211,9 @@ export default function CreateEventPage() {
                     </div>
                 </div>
 
-                <div className="max-w-6xl mx-auto grid md:grid-cols-[320px_1fr] gap-10">
+                <div className="w-full max-w-6xl grid lg:grid-cols-[320px_1fr] gap-8 md:gap-10">
                     {/* LEFT: Image + Theme */}
-                    <div className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-500">
+                    <div className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-500 w-full max-w-[320px] mx-auto lg:mx-0">
                         <div
                             className="aspect-square w-full rounded-2xl overflow-hidden flex items-center justify-center cursor-pointer border-2 border-dashed border-white/20 bg-black/10 hover:bg-black/20 hover:border-white/40 transition-all group relative"
                             onClick={() => setShowImagePicker(true)}

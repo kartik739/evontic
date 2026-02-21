@@ -10,6 +10,7 @@ import { useConvexQuery, useConvexMutation } from "@/hooks/use-convex-query";
 import { api } from "@/convex/_generated/api";
 import { createLocationSlug } from "@/lib/location-utils";
 import { getCategoryIcon } from "@/lib/data";
+import { CategoryIcon } from "@/components/category-icon";
 
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -113,9 +114,9 @@ export default function SearchLocationBar() {
     }, []);
 
     return (
-        <div className="flex items-center">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center w-full max-w-full gap-2 md:gap-0">
             {/* Search Bar */}
-            <div className="relative flex w-full" ref={searchRef}>
+            <div className="relative flex w-full md:w-auto flex-1" ref={searchRef}>
                 <div className="flex-1">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
@@ -124,7 +125,7 @@ export default function SearchLocationBar() {
                         onFocus={() => {
                             if (searchQuery.length >= 2) setShowSearchResults(true);
                         }}
-                        className="pl-10 w-full h-9 rounded-none rounded-l-md"
+                        className="pl-10 w-full h-9 bg-background rounded-md md:rounded-r-none md:rounded-l-md"
                     />
                 </div>
 
@@ -148,7 +149,7 @@ export default function SearchLocationBar() {
                                     >
                                         <div className="flex items-start gap-3">
                                             <div className="text-2xl mt-0.5">
-                                                {getCategoryIcon(event.category)}
+                                                <CategoryIcon name={getCategoryIcon(event.category)} className="w-6 h-6" />
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <p className="font-medium mb-1 line-clamp-1">
@@ -179,50 +180,52 @@ export default function SearchLocationBar() {
                 )}
             </div>
 
-            {/* State Select */}
-            <Select
-                value={selectedState}
-                onValueChange={(value) => {
-                    setSelectedState(value);
-                    setSelectedCity("");
-                }}
-            >
-                <SelectTrigger className="w-32 h-9 border-l-0 rounded-none">
-                    <SelectValue placeholder="State" />
-                </SelectTrigger>
-                <SelectContent>
-                    {/* <SelectItem value="">State</SelectItem> */}
-                    {indianStates.map((state) => (
-                        <SelectItem key={state.isoCode} value={state.name}>
-                            {state.name}
-                        </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 md:gap-0 w-full md:w-auto min-w-0">
+                {/* State Select */}
+                <Select
+                    value={selectedState}
+                    onValueChange={(value) => {
+                        setSelectedState(value);
+                        setSelectedCity("");
+                    }}
+                >
+                    <SelectTrigger className="flex-1 w-full min-w-0 md:w-32 h-9 bg-background rounded-md md:rounded-none md:border-l-0 [&>span]:truncate">
+                        <SelectValue placeholder="State" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {/* <SelectItem value="">State</SelectItem> */}
+                        {indianStates.map((state) => (
+                            <SelectItem key={state.isoCode} value={state.name}>
+                                {state.name}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
 
-            {/* City Select */}
-            <Select
-                value={selectedCity}
-                onValueChange={(value) => {
-                    setSelectedCity(value);
-                    if (value && selectedState) {
-                        handleLocationSelect(value, selectedState);
-                    }
-                }}
-                disabled={!selectedState}
-            >
-                <SelectTrigger className="w-32 h-9 rounded-none rounded-r-md ">
-                    <SelectValue placeholder="City" />
-                </SelectTrigger>
-                <SelectContent>
-                    {/* <SelectItem value="">City</SelectItem> */}
-                    {cities.map((city) => (
-                        <SelectItem key={city.name} value={city.name}>
-                            {city.name}
-                        </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
+                {/* City Select */}
+                <Select
+                    value={selectedCity}
+                    onValueChange={(value) => {
+                        setSelectedCity(value);
+                        if (value && selectedState) {
+                            handleLocationSelect(value, selectedState);
+                        }
+                    }}
+                    disabled={!selectedState}
+                >
+                    <SelectTrigger className="flex-1 w-full min-w-0 md:w-32 h-9 bg-background rounded-md md:rounded-l-none md:rounded-r-md [&>span]:truncate">
+                        <SelectValue placeholder="City" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {/* <SelectItem value="">City</SelectItem> */}
+                        {cities.map((city) => (
+                            <SelectItem key={city.name} value={city.name}>
+                                {city.name}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
         </div>
     );
 }
